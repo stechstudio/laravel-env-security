@@ -1,2 +1,5 @@
 /vendor/
 .idea
+.env
+.env.txt.enc
+.env.txt
