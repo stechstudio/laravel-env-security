@@ -10,6 +10,7 @@
 
 namespace STS\Kms\DotEnv\TextUI;
 
+use STS\Kms\DotEnv\Crypto\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,7 +25,8 @@ class Decrypt extends Command
             ->setName('kms:decrypt')
             ->setDescription('Decrypt a file.')
             ->setHelp('This command allows you to decrypt a file with a KMS key.')
-            ->addArgument('file', InputArgument::REQUIRED, 'File path to encrypt.')
+            ->addArgument('in', InputArgument::REQUIRED, 'File path to encrypt.')
+            ->addArgument('out', InputArgument::REQUIRED, 'File path to encrypt.')
             ->addOption(
                 'kmsid',
                 'k',
@@ -42,19 +44,9 @@ class Decrypt extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $kms = new \Aws\Kms\KmsClient([
-            'version' => 'latest',
-            'region' => $input->getOption('region'),
-        ]);
-
-        $result = $kms->decrypt([
-            'CiphertextBlob' => base64_decode(file_get_contents($input->getArgument('file'))),
-        ]);
-
-        file_put_contents(
-            sprintf('.env'),
-            $result->get('Plaintext')
-        );
-        $output->writeln('Decrypted.');
+        (new Client($input->getOption('kmsid'), ['region' => $input->getOption('region')]))
+            ->decryptFile($input->getArgument('in'))
+            ->saveDecryptedFile($input->getArgument('out'));
+        $output->writeln(sprintf('%s was saved.', $input->getArgument('out')));
     }
 }
