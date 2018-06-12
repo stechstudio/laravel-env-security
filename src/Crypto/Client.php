@@ -80,7 +80,7 @@ class Client
      *
      * @return Client
      */
-    public function factory(string $keyId, array $config = []): Client
+    public static function factory(string $keyId, array $config = []): Client
     {
         return new static($keyId, $config);
     }
