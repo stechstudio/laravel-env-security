@@ -10,6 +10,7 @@
 
 namespace STS\Kms\DotEnv\TextUI;
 
+use STS\Kms\DotEnv\Crypto\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,7 +26,8 @@ class Encrypt extends Command
             ->setName('kms:encrypt')
             ->setDescription('Encrypt a file.')
             ->setHelp('This command allows you to encrypt a file with a KMS key.')
-            ->addArgument('file', InputArgument::REQUIRED, 'File path to encrypt.')
+            ->addArgument('in', InputArgument::REQUIRED, 'File path to encrypt.')
+            ->addArgument('out', InputArgument::REQUIRED, 'File path to encrypt.')
             ->addOption(
                 'kmsid',
                 'k',
@@ -43,20 +45,9 @@ class Encrypt extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $kms = new \Aws\Kms\KmsClient([
-            'version' => 'latest',
-            'region' => $input->getOption('region'),
-        ]);
-
-        $result = $kms->encrypt([
-            'KeyId' => $input->getOption('kmsid'),
-            'Plaintext' => file_get_contents($input->getArgument('file')),
-        ]);
-
-        file_put_contents(
-            sprintf('%s.enc', $input->getArgument('file')),
-            base64_encode($result->get('CiphertextBlob'))
-        );
-        $output->writeln('Encrypted.');
+        (new Client($input->getOption('kmsid'), ['region' => $input->getOption('region')]))
+            ->encryptFile($input->getArgument('in'))
+            ->saveEncryptedFile($input->getArgument('out'));
+        $output->writeln(sprintf('%s was saved.', $input->getArgument('out')));
     }
 }
