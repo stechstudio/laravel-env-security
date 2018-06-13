@@ -1,13 +1,23 @@
 <?php
+/*
+ * This file is part of kmsdotenv.
+ *
+ *  (c) Signature Tech Studio, Inc <info@stechstudio.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
+ */
 
 namespace STS\Kms\DotEnv;
 
+use STS\Kms\DotEnv\Console\CopyEncryptedDotFile;
 use STS\Kms\DotEnv\Console\DecryptDotFile;
 use STS\Kms\DotEnv\Console\DecryptFile;
-use STS\Kms\DotEnv\Console\EditEncryptDotFile;
+use STS\Kms\DotEnv\Console\EditEncryptedDotFile;
 use STS\Kms\DotEnv\Console\EncryptDotFile;
 use STS\Kms\DotEnv\Console\EncryptFile;
 use STS\Kms\DotEnv\Crypto\Client;
+use STS\Kms\DotEnv\Exceptions\ConfigurationException;
 use STS\Kms\DotEnv\Facades\KMSDotEnv;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -38,7 +48,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         if (! is_dir(config('kms.dir_ciphertext'))) {
             if (! mkdir(config('kms.dir_ciphertext'))) {
-                throw new \Exception(sprintf('Error creating the cipertext directory - %s', config('kms.dir_ciphertext')));
+                throw new ConfigurationException(
+                    sprintf('Error creating the cipertext directory - %s', config('kms.dir_ciphertext'))
+                );
             }
         }
 
@@ -48,7 +60,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                 DecryptFile::class,
                 EncryptDotFile::class,
                 EncryptFile::class,
-                EditEncryptDotFile::class,
+                EditEncryptedDotFile::class,
+                CopyEncryptedDotFile::class,
             ]);
         }
     }
@@ -63,7 +76,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->app->singleton(
             Client::class,
             function ($app) {
-                return Client::factory(config('kms.kms_key_id'), [config('kms.kms_key_region')]);
+                if (empty(config('kms.kms_key_id'))) {
+                    throw new ConfigurationException();
+                }
+
+                return Client::factory(config('kms.kms_key_id'), ['region' => config('kms.kms_key_region')]);
             }
         );
 

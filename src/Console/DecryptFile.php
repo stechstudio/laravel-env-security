@@ -1,12 +1,24 @@
 <?php
+/*
+ * This file is part of kmsdotenv.
+ *
+ *  (c) Signature Tech Studio, Inc <info@stechstudio.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
+ */
 
 namespace STS\Kms\DotEnv\Console;
 
 use Illuminate\Console\Command;
-use STS\Kms\DotEnv\Crypto\Client;
+use STS\Kms\DotEnv\Console\Concerns\KeyConfiguration;
+use STS\Kms\DotEnv\Console\Concerns\RegionConfiguration;
+use STS\Kms\DotEnv\Facades\KMSDotEnv;
 
 class DecryptFile extends Command
 {
+    use KeyConfiguration, RegionConfiguration;
+
     /**
      * The name and signature of the console command.
      *
@@ -15,8 +27,8 @@ class DecryptFile extends Command
     protected $signature = 'dotenv:decrypt-file
                             {in : Path to the file to decrypt.} 
                             {out : Path to store the plaintext file. } 
-                            {region=us-east-1 : AWS Region the key is in.}
-                            {--K|kmsid : KMS Key ID or Alias}';
+                            {--r|region : AWS Region the key is in.}
+                            {--k|kmsid : KMS Key ID or Alias}';
 
     /**
      * The console command description.
@@ -32,14 +44,16 @@ class DecryptFile extends Command
      */
     public function handle()
     {
-        (new Client(
-            is_null($this->option('kmsid')) ?
-                config('kms.keyId') :
-                $this->option('kmsid'),
-            ['region' => $this->argument('region')]
-        ))
-            ->decryptFile($this->argument('in'))
-            ->saveDecryptedFile($this->argument('out'));
+        try {
+            $this->configureKey();
+            KMSDotEnv::decryptFile($this->argument('in'), $this->configureRegion())
+                ->saveDecryptedFile($this->argument('out'), $this->configureRegion());
+        } catch (ConfigurationException $e) {
+            $this->error('You need to configure kmsdotenv.');
+
+            return 1;
+        }
+
         $this->info(sprintf('%s decrypted to %s.', $this->argument('in'), $this->argument('out')));
     }
 }

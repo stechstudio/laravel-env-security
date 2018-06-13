@@ -14,7 +14,7 @@ use Illuminate\Console\Command;
 use STS\Kms\DotEnv\Console\Concerns\SourceConfiguration;
 use STS\Kms\DotEnv\Facades\KMSDotEnv;
 
-class EditEncryptedDotFile extends Command
+class CopyEncryptedDotFile extends Command
 {
     use SourceConfiguration;
 
@@ -23,14 +23,16 @@ class EditEncryptedDotFile extends Command
      *
      * @var string
      */
-    protected $signature = 'dotenv:edit {environment : The environment file to decrypt.}';
+    protected $signature = 'dotenv:copy 
+                            {src-environment : The environment of the file to copy.} 
+                            {dest-environment : The environment of the file to create.}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Edit an encrypted dotfile.';
+    protected $description = 'Copy an encrypted dotfile.';
 
     /**
      * Execute the console command.
@@ -40,9 +42,10 @@ class EditEncryptedDotFile extends Command
     public function handle()
     {
         try {
-            KMSDotEnv::editEncryptedFile(
+            KMSDotEnv::copyEncryptedFile(
                 config('kms.editor'),
-                $this->getCiphertextFileArgument($this->argument('environment'))
+                $this->getCiphertextFileArgument($this->argument('src-environment')),
+                $this->getCiphertextFileArgument($this->argument('dest-environment'))
             );
         } catch (ConfigurationException $e) {
             $this->error('You need to configure kmsdotenv.');
@@ -50,7 +53,11 @@ class EditEncryptedDotFile extends Command
             return 1;
         }
 
-        $this->info(sprintf('Successfully updated %s.', $this->getCiphertextFileArgument()));
+        $this->info(sprintf(
+            'Successfully coppied %s to %s.',
+            $this->getCiphertextFileArgument($this->argument('src-environment')),
+            $this->getCiphertextFileArgument($this->argument('dest-environment'))
+        ));
 
         return 0;
     }

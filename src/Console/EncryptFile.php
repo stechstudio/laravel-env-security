@@ -1,12 +1,24 @@
 <?php
+/*
+ * This file is part of kmsdotenv.
+ *
+ *  (c) Signature Tech Studio, Inc <info@stechstudio.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
+ */
 
 namespace STS\Kms\DotEnv\Console;
 
 use Illuminate\Console\Command;
+use STS\Kms\DotEnv\Console\Concerns\KeyConfiguration;
+use STS\Kms\DotEnv\Console\Concerns\RegionConfiguration;
 use STS\Kms\DotEnv\Facades\KMSDotEnv;
 
 class EncryptFile extends Command
 {
+    use KeyConfiguration, RegionConfiguration;
+
     /**
      * The name and signature of the console command.
      *
@@ -32,8 +44,16 @@ class EncryptFile extends Command
      */
     public function handle()
     {
-        KMSDotEnv::encryptFile($this->argument('in'))
-            ->saveEncryptedFile($this->argument('out'));
+        try {
+            $this->configureKey();
+            KMSDotEnv::encryptFile($this->argument('in'), $this->configureRegion())
+                ->saveEncryptedFile($this->argument('out'), $this->configureRegion());
+        } catch (ConfigurationException $e) {
+            $this->error('You need to configure kmsdotenv.');
+
+            return 1;
+        }
+
         $this->info(sprintf('%s encrypted to %s.', $this->argument('in'), $this->argument('out')));
     }
 }
