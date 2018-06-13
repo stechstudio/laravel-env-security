@@ -4,6 +4,7 @@ namespace STS\Kms\DotEnv;
 
 use STS\Kms\DotEnv\Console\DecryptDotFile;
 use STS\Kms\DotEnv\Console\DecryptFile;
+use STS\Kms\DotEnv\Console\EditEncryptDotFile;
 use STS\Kms\DotEnv\Console\EncryptDotFile;
 use STS\Kms\DotEnv\Console\EncryptFile;
 use STS\Kms\DotEnv\Crypto\Client;
@@ -35,12 +36,19 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         }
         $this->publishes([$this->configPath => $publishPath], 'config');
 
+        if (! is_dir(config('kms.dir_ciphertext'))) {
+            if (! mkdir(config('kms.dir_ciphertext'))) {
+                throw new \Exception(sprintf('Error creating the cipertext directory - %s', config('kms.dir_ciphertext')));
+            }
+        }
+
         if ($this->app->runningInConsole()) {
             $this->commands([
                 DecryptDotFile::class,
                 DecryptFile::class,
                 EncryptDotFile::class,
                 EncryptFile::class,
+                EditEncryptDotFile::class,
             ]);
         }
     }

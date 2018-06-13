@@ -20,6 +20,7 @@ use STS\Kms\DotEnv\Crypto\Client;
  * @method static Client saveEncryptedFile(string $path)
  * @method static Client saveDecryptedFile(string $path)
  * @method static string plaintext()
+ * @method static Client editEncryptedFile(string $editorPath, string $path, array $options = [])
  */
 class KMSDotEnv extends Facade
 {

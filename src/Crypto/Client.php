@@ -219,4 +219,22 @@ class Client
     {
         return $this->decryptResult->get('Plaintext');
     }
+
+    public function editEncryptedFile(string $editorPath, string $path, array $options = []): Client
+    {
+        $this->decryptFile($path, $options);
+
+        $tmpFile = tmpfile();
+        fwrite($tmpFile, $this->plaintext());
+        $meta = stream_get_meta_data($tmpFile);
+
+        $process = new \Symfony\Component\Process\Process([$editorPath, $meta['uri']]);
+        $process->setTty(true);
+        $process->mustRun();
+
+        $this->encryptFile($meta['uri'], $options);
+        $this->saveEncryptedFile($path);
+
+        return $this;
+    }
 }
