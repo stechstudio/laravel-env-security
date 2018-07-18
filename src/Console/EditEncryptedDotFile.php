@@ -50,7 +50,7 @@ class EditEncryptedDotFile extends Command
             return 1;
         }
 
-        $this->info(sprintf('Successfully updated %s.', $this->getCiphertextFileArgument()));
+        $this->info(sprintf('Successfully updated %s.', $this->getCiphertextFileArgument($this->argument('environment'))));
 
         return 0;
     }
