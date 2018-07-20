@@ -70,7 +70,20 @@ Run `php artisan env:edit [name]` where `[name]` is the environment you wish to 
 in the file, save, and quit.
 
 #### Decrypt your .env
-Now you can run `php artisan end:decrypt [name]` which will decrypt the ciphertext file you edited, and write the
+Now you can run `php artisan env:decrypt [name]` which will decrypt the ciphertext file you edited, and write the
 plaintext to your `.env`, replacing anything that was in it. Now if you look at your `.env` you should see your edit.
 
 If no environment `[name]` is provided, the environment will be determined by your own custom resolution callback or the `APP_ENV` environment variable.
+
+## First deploy
+
+As you're reading through this, you're probably wondering how that *first initial* deploy is going to work. In order for this package to decrypt your .env config where all your sensitive credentials are stored, it needs AWS account access with permission to your KMS key. 
+
+Yep, it's [turtles all the way down](https://en.wikipedia.org/wiki/Turtles_all_the_way_down).
+
+There are a number of ways to handle this, all dependent on the environment and deployment process.
+
+1. If you are using AWS EC2, you can [assign IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html#roles-usingrole-ec2instance-roles) to grant the instance access to your KMS key. 
+2. Regardless of your host provider, you can always put a `~/.aws/credentials` file on the server to provide necessary KMS permissions.
+3. Many deployment services like [Laravel Forge](https://forge.laravel.com/) or [Laravel Envoyer](https://envoyer.io/) provide ways to specify environment variables which you can use to provide AWS/KMS credentials.
+4. And of course, you can always just ssh in manually to a fresh new server and put the necessary AWS/KMS environment variables in a temporary .env file as well, which will get overwritten on the first deploy.   
