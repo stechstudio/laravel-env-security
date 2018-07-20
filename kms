@@ -42,9 +42,9 @@ if (!defined('KMSDOTENV_COMPOSER_INSTALL')) {
 }
 require KMSDOTENV_COMPOSER_INSTALL;
 
-use STS\Kms\DotEnv\TextUI\Edit;
-use STS\Kms\DotEnv\TextUI\Encrypt;
-use STS\Kms\DotEnv\TextUI\Decrypt;
+use STS\EnvSecurity\TextUI\Edit;
+use STS\EnvSecurity\TextUI\Encrypt;
+use STS\EnvSecurity\TextUI\Decrypt;
 use Symfony\Component\Console\Application;
 
 $application = new Application('kms', '1.0.0');
