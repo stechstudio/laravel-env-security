@@ -41,8 +41,6 @@ class EnvSecurityServiceProvider extends ServiceProvider
             $this->app->configure('env-security');
         }
         $this->mergeConfigFrom($this->configPath, 'env-security');
-
-        class_alias(EnvSecurityFacade::class, \EnvSecurity::class);
     }
 
     public function boot()

@@ -12,7 +12,7 @@ namespace STS\EnvSecurity\Console;
 
 use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
 use Illuminate\Console\Command;
-use EnvSecurity;
+use STS\EnvSecurity\EnvSecurityManager;
 
 
 /**
@@ -40,6 +40,18 @@ class Decrypt extends Command
     protected $description = 'Decrypt a .env file. Tries to deduce the environment if none provided.';
 
     /**
+     * @var EnvSecurityManager
+     */
+    protected $envSecurity;
+
+    public function __construct(EnvSecurityManager $envSecurity)
+    {
+        $this->envSecurity = $envSecurity;
+
+        parent::__construct();
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
@@ -58,7 +70,7 @@ class Decrypt extends Command
             return 1;
         }
 
-        $plaintext = EnvSecurity::decrypt($ciphertext);
+        $plaintext = $this->envSecurity->decrypt($ciphertext);
 
         if (!$this->saveDecrypted($plaintext, $this->option('out'))) {
             $this->error("Unable to save decrypted .env file");
@@ -75,7 +87,7 @@ class Decrypt extends Command
     protected function getEnvironment()
     {
         return is_null($this->argument('environment'))
-            ? EnvSecurity::resolveEnvironment()
+            ? $this->envSecurity->resolveEnvironment()
             : $this->argument('environment');
     }
 }

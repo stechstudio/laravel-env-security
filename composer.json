@@ -28,7 +28,10 @@
         "laravel": {
             "providers": [
                 "STS\\EnvSecurity\\EnvSecurityServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "EnvSecurity": "STS\\EnvSecurity\\EnvSecurityFacade"
+            }
         }
     },
     "license": "MIT",

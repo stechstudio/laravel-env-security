@@ -11,10 +11,14 @@
 namespace STS\EnvSecurity\Console;
 
 use Illuminate\Console\Command;
-use EnvSecurity;
 use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
+use STS\EnvSecurity\EnvSecurityManager;
 use Symfony\Component\Process\Process;
 
+/**
+ * Class Edit
+ * @package STS\EnvSecurity\Console
+ */
 class Edit extends Command
 {
     use HandlesEnvFiles;
@@ -34,6 +38,18 @@ class Edit extends Command
     protected $description = 'Edit an encrypted env file';
 
     /**
+     * @var EnvSecurityManager
+     */
+    protected $envSecurity;
+
+    public function __construct(EnvSecurityManager $envSecurity)
+    {
+        $this->envSecurity = $envSecurity;
+
+        parent::__construct();
+    }
+    
+    /**
      * Execute the console command.
      *
      * @return mixed
@@ -43,12 +59,12 @@ class Edit extends Command
         $environment = $this->argument('environment');
 
         if($ciphertext = $this->loadEncrypted($environment)) {
-            $plaintext = EnvSecurity::decrypt($ciphertext);
+            $plaintext = $this->envSecurity->decrypt($ciphertext);
         } else {
             $plaintext = '';
         }
 
-        $ciphertext = EnvSecurity::encrypt($this->edit($plaintext));
+        $ciphertext = $this->envSecurity->encrypt($this->edit($plaintext));
 
         $this->saveEncrypted($ciphertext, $environment);
 
