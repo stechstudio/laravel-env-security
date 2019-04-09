@@ -11,8 +11,11 @@
 namespace STS\EnvSecurity;
 
 use Illuminate\Support\ServiceProvider;
+use RuntimeException;
 use STS\EnvSecurity\Console\Decrypt;
 use STS\EnvSecurity\Console\Edit;
+use function config;
+use function sprintf;
 
 class EnvSecurityServiceProvider extends ServiceProvider
 {
@@ -30,6 +33,50 @@ class EnvSecurityServiceProvider extends ServiceProvider
      */
     protected $configPath = __DIR__ . '/../config/env-security.php';
 
+    public function boot()
+    {
+        // helps deal with Lumen vs Laravel differences
+        if (function_exists('config_path')) {
+            $publishPath = config_path('env-security.php');
+        } else {
+            $publishPath = base_path('config/env-security.php');
+        }
+        $this->publishes([$this->configPath => $publishPath], 'config');
+
+        try {
+            if (! is_dir(config('env-security.store'))) {
+                if (! mkdir(config('env-security.store'))) {
+                    throw new RuntimeException(
+                        sprintf('Error creating the cipertext directory - %s', config('env-security.store'))
+                    );
+                }
+            }
+        } catch (\Throwable $e) {
+            throw new RuntimeException(
+                sprintf('Error creating the cipertext directory - %s', config('env-security.store')),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Decrypt::class,
+                Edit::class,
+            ]);
+        }
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['sts.env-security', EnvSecurityManager::class];
+    }
+
     public function register()
     {
         $this->app->singleton(EnvSecurityManager::class, function () {
@@ -41,42 +88,5 @@ class EnvSecurityServiceProvider extends ServiceProvider
             $this->app->configure('env-security');
         }
         $this->mergeConfigFrom($this->configPath, 'env-security');
-    }
-
-    public function boot()
-    {
-        // helps deal with Lumen vs Laravel differences
-        if (function_exists('config_path')) {
-            $publishPath = config_path('env-security.php');
-        } else {
-            $publishPath = base_path('config/env-security.php');
-        }
-        $this->publishes([$this->configPath => $publishPath], 'config');
-
-        if (!is_dir(config('env-security.store'))) {
-            if (!mkdir(config('env-security.store'))) {
-                throw new ConfigurationException(
-                    sprintf('Error creating the cipertext directory - %s', config('env-security.store'))
-                );
-            }
-        }
-
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                Decrypt::class,
-                Edit::class,
-            ]);
-        }
-    }
-
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return ['sts.env-security', EnvSecurityManager::class];
     }
 }
