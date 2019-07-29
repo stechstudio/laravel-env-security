@@ -16,6 +16,7 @@ use STS\EnvSecurity\Console\Decrypt;
 use STS\EnvSecurity\Console\Edit;
 use function config;
 use function sprintf;
+use Tests\EditDouble;
 
 class EnvSecurityServiceProvider extends ServiceProvider
 {
@@ -43,6 +44,18 @@ class EnvSecurityServiceProvider extends ServiceProvider
         }
         $this->publishes([$this->configPath => $publishPath], 'config');
 
+        $this->verifyDirectory();
+
+        if ($this->app->runningInConsole()) {
+            $this->commands($this->getConsoleCommands());
+        }
+    }
+
+    /**
+     * Make sure our directory is setup and ready
+     */
+    protected function verifyDirectory()
+    {
         try {
             if (! is_dir(config('env-security.store'))) {
                 if (! mkdir(config('env-security.store'))) {
@@ -58,13 +71,16 @@ class EnvSecurityServiceProvider extends ServiceProvider
                 $e
             );
         }
+    }
 
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                Decrypt::class,
-                Edit::class,
-            ]);
-        }
+    /**
+     * Register our console commands
+     */
+    protected function getConsoleCommands()
+    {
+        return $this->app->environment('testing')
+            ? [Decrypt::class, EditDouble::class]
+            : [Decrypt::class, Edit::class];
     }
 
     /**

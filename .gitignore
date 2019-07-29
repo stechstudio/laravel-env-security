@@ -1,4 +1,5 @@
 /vendor/
+/output/
 .idea
 .env
 .env.txt.enc

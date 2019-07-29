@@ -48,7 +48,7 @@ class Edit extends Command
 
         parent::__construct();
     }
-    
+
     /**
      * Execute the console command.
      *
@@ -56,19 +56,13 @@ class Edit extends Command
      */
     public function handle()
     {
-        $environment = $this->argument('environment');
+        $this->saveEnvContents(
+            $this->edit(
+                $this->loadEnvContents()
+            )
+        );
 
-        if($ciphertext = $this->loadEncrypted($environment)) {
-            $plaintext = $this->envSecurity->decrypt($ciphertext);
-        } else {
-            $plaintext = '';
-        }
-
-        $ciphertext = $this->envSecurity->encrypt($this->edit($plaintext));
-
-        $this->saveEncrypted($ciphertext, $environment);
-
-        $this->info("Successfully updated .env for environment [$environment]");
+        $this->info("Successfully updated .env for environment [{$this->environment()}]");
     }
 
     /**
@@ -87,5 +81,33 @@ class Edit extends Command
         $process->mustRun();
 
         return file_get_contents($meta['uri']);
+    }
+
+    /**
+     * @return string
+     */
+    protected function environment()
+    {
+        return $this->argument('environment');
+    }
+
+    /**
+     * @return string
+     */
+    protected function loadEnvContents()
+    {
+        if($ciphertext = $this->loadEncrypted($this->environment())) {
+            return $this->envSecurity->decrypt($ciphertext);
+        }
+
+        return '';
+    }
+
+    /**
+     * @param $plaintext
+     */
+    protected function saveEnvContents($plaintext)
+    {
+        $this->saveEncrypted($this->envSecurity->encrypt($plaintext), $this->environment());
     }
 }
