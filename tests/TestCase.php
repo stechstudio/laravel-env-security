@@ -44,5 +44,6 @@ abstract class TestCase extends BaseTestCase
 
         Config::set('env-security.default', 'test');
         Config::set('env-security.store', __DIR__ . '/store');
+        Config::set('env-security.destination', __DIR__ . '/.env-saved');
     }
 }

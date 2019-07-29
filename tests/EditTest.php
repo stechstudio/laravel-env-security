@@ -23,10 +23,6 @@ class EditTest extends TestCase
                 public function encrypt($plaintext) {
                     throw new \Exception('Should not be here. I received: ' . $plaintext);
                 }
-
-                public function decrypt($plaintext) {
-                    throw new \Exception('Should not be here. I received: ' . $plaintext);
-                }
             };
         });
         Config::set('env-security.default', 'failonencrypt');

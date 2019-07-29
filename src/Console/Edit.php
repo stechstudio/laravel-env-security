@@ -67,6 +67,7 @@ class Edit extends Command
 
     /**
      * @param $contents
+     * @codeCoverageIgnore
      *
      * @return mixed
      */
