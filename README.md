@@ -1,4 +1,9 @@
 # Securely manage Laravel .env files
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/stechstudio/laravel-env-security.svg?style=flat-square)](https://packagist.org/packages/stechstudio/laravel-env-security)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Quality Score](https://img.shields.io/scrutinizer/g/stechstudio/laravel-env-security.svg?style=flat-square)](https://scrutinizer-ci.com/g/stechstudio/laravel-env-security)
+
 This package helps you manage .env files for different deployment environments. Each .env file is securely encrypted and kept in your app's version control. When you deploy your app the appropriate environment-specific .env file is decrypted and moved into place.
 
 This was partly inspired by [Marcel's excellent credentials package](https://github.com/beyondcode/laravel-credentials). If you want to manage your credentials in a json file, with Laravel handling the encryption/decryption, and only have one deployment environment, that package may be a better fit for your needs.
