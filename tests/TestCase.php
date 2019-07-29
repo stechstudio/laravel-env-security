@@ -26,6 +26,8 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
+        @mkdir(__DIR__ . '/store');
+
         EnvSecurity::extend('laravel', function() {
             return app('encrypter');
         });
