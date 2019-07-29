@@ -108,6 +108,10 @@ class Edit extends Command
      */
     protected function saveEnvContents($plaintext)
     {
-        $this->saveEncrypted($this->envSecurity->encrypt($plaintext), $this->environment());
+        $ciphertext = !empty($plaintext)
+            ? $this->envSecurity->encrypt($plaintext)
+            : '';
+
+        $this->saveEncrypted($ciphertext, $this->environment());
     }
 }
