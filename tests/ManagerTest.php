@@ -31,4 +31,16 @@ class ManagerTest extends TestCase
 
         $this->assertEquals('heya', EnvSecurity::resolveEnvironment());
     }
+
+    public function testResolveKey()
+    {
+        // By default it will be null
+        $this->assertNull(EnvSecurity::resolveKey());
+
+        EnvSecurity::resolveKeyUsing(function($environment) {
+            return "alias/myapp-$environment";
+        });
+
+        $this->assertEquals("alias/myapp-testing", EnvSecurity::resolveKey());
+    }
 }

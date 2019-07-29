@@ -14,6 +14,11 @@ class EnvSecurityManager extends Manager
     protected $environmentResolver;
 
     /**
+     * @var callable
+     */
+    protected $keyResolver;
+
+    /**
      * @param callable $callback
      */
     public function resolveEnvironmentUsing($callback)
@@ -32,6 +37,24 @@ class EnvSecurityManager extends Manager
     }
 
     /**
+     * @param $callback
+     */
+    public function resolveKeyUsing($callback)
+    {
+        $this->keyResolver = $callback;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function resolveKey()
+    {
+        return isset($this->keyResolver)
+            ? call_user_func($this->keyResolver, $this->resolveEnvironment())
+            : null;
+    }
+
+    /**
      * @return string
      */
     public function getDefaultDriver()
@@ -46,6 +69,10 @@ class EnvSecurityManager extends Manager
     {
         $config = $this->app['config']['env-security.drivers.kms'];
 
-        return new KmsDriver(new KmsClient($config), $config['key_id']);
+        $key = $this->keyResolver
+            ? $this->resolveKey()
+            : $config['key_id'];
+
+        return new KmsDriver(new KmsClient($config), $key);
     }
 }
