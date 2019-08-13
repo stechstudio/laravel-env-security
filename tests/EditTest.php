@@ -10,6 +10,14 @@ class EditTest extends TestCase
 {
     use HandlesEnvFiles;
 
+    /**
+     * Need a specific SP to load a specific artisan command test double
+     */
+    protected function getPackageProviders($app)
+    {
+        return [ServiceProviderDouble::class];
+    }
+
     public function testEditEmptyFile()
     {
         // Make sure no file is present

@@ -16,7 +16,6 @@ use STS\EnvSecurity\Console\Decrypt;
 use STS\EnvSecurity\Console\Edit;
 use function config;
 use function sprintf;
-use Tests\EditDouble;
 
 class EnvSecurityServiceProvider extends ServiceProvider
 {
@@ -78,9 +77,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
      */
     protected function getConsoleCommands()
     {
-        return $this->app->environment('testing')
-            ? [Decrypt::class, EditDouble::class]
-            : [Decrypt::class, Edit::class];
+        return [Decrypt::class, Edit::class];
     }
 
     /**
