@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Console\Commands;
+namespace STS\EnvSecurity\Console;
 
 
 use Illuminate\Console\Command;

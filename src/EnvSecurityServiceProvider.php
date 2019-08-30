@@ -10,7 +10,7 @@
 
 namespace STS\EnvSecurity;
 
-use App\Console\Commands\Encrypt;
+use STS\EnvSecurity\Console\Encrypt;
 use Illuminate\Support\ServiceProvider;
 use RuntimeException;
 use STS\EnvSecurity\Console\Decrypt;
