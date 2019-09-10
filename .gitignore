@@ -7,4 +7,5 @@
 .env.txt
 .php_cs.cache
 .php_cs_laravel
+.phpunit*
 composer.lock
