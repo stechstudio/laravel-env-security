@@ -4,6 +4,7 @@ namespace Tests;
 
 use Config;
 use EnvSecurity;
+use STS\EnvSecurity\Drivers\GoogleKmsDriver;
 use STS\EnvSecurity\Drivers\KmsDriver;
 
 class ManagerTest extends TestCase
@@ -12,6 +13,16 @@ class ManagerTest extends TestCase
     {
         Config::set('env-security.default', 'kms');
         $this->assertInstanceOf(KmsDriver::class, EnvSecurity::driver());
+
+        Config::set('env-security.default', 'google_kms');
+        Config::set('env-security.drivers.google_kms', [
+            'project' => 'project-131708',
+            'location' => 'global',
+            'key_ring' => 'laravel',
+            'key_id' => 'dotenv',
+        ]);
+
+        $this->assertInstanceOf(GoogleKmsDriver::class, EnvSecurity::driver());
 
         Config::set('env-security.default', 'invalid');
 

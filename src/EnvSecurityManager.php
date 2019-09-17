@@ -3,7 +3,10 @@
 namespace STS\EnvSecurity;
 
 use Aws\Kms\KmsClient;
+use Google\Cloud\Kms\V1\KeyManagementServiceClient;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Manager;
+use STS\EnvSecurity\Drivers\GoogleKmsDriver;
 use STS\EnvSecurity\Drivers\KmsDriver;
 
 class EnvSecurityManager extends Manager
@@ -74,5 +77,27 @@ class EnvSecurityManager extends Manager
             : $config['key_id'];
 
         return new KmsDriver(new KmsClient($config), $key);
+    }
+
+    /**
+     * @return GoogleKmsDriver
+     */
+    public function createGoogleKmsDriver()
+    {
+        $config = $this->app['config']['env-security.drivers.google_kms'];
+
+        if ($this->keyResolver) {
+            $config['key_id'] = $this->resolveKey();
+        }
+
+        $options = Arr::get($config, 'options', []);
+
+        return new GoogleKmsDriver(
+            new KeyManagementServiceClient($options),
+            Arr::get($config, 'project'),
+            Arr::get($config, 'location'),
+            Arr::get($config, 'key_ring'),
+            Arr::get($config, 'key_id')
+        );
     }
 }
