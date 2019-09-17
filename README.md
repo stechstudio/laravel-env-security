@@ -46,17 +46,17 @@ If you are using a version of Laravel earlier than 5.5, you will need to manuall
 ```
 
 ## Environment resolution
-In order for this package to decrypt the correct .env file when you deploy, you need to tell it how to figure out the environment. 
+In order for this package to decrypt the correct .env file when you deploy, you need to tell it how to figure out the environment.
 
 By default it will look for a `APP_ENV` environment variable. However you can provide your own custom resolver with a callback function. Put this in your `AppServiceProvider`'s `boot` method:
- 
+
 ```php
 \EnvSecurity::resolveEnvironmentUsing(function() {
     // return the environment name
 });
-``` 
+```
 
-This way you can resolve out the environment based on hostname, an EC2 instance tag, etc. This will then decrypt the correct .env file based on the environment name you return. 
+This way you can resolve out the environment based on hostname, an EC2 instance tag, etc. This will then decrypt the correct .env file based on the environment name you return.
 
 ## Drivers
 
@@ -67,13 +67,21 @@ Currently AWS Key Management Service is the only driver. (Others are planned for
 AWS KMS is a managed service that makes it easy for you to create and control the encryption keys used to encrypt your data, and uses FIPS 140-2 validated hardware security modules to protect the security of your keys.
 
 In the [AWS Console](https://console.aws.amazon.com/iam/home?#/encryptionKeys) create your encryption key. Make sure your AWS IAM user has `kms:Encrypt` and `kms:Decrypt` permissions on this key.
- 
-Copy the Key ID and store it as `AWS_KMS_KEY` in your local .env file. As you setup environment-specific .env files, make sure to include this `AWS_KMS_KEY` in each .env file. 
+
+Copy the Key ID and store it as `AWS_KMS_KEY` in your local .env file. As you setup environment-specific .env files, make sure to include this `AWS_KMS_KEY` in each .env file.
+
+### Google Cloud Key Management Service
+
+Google KMS securely manages encryption keys and secrets on Google Cloud Platform. The Google KMS integration with Google HSM makes it simple to create a key protected by a FIPS 140-2 Level 3 device.
+
+In the [Google Cloud Console](https://console.cloud.google.com/security/kms) create your key ring and key. Make sure your Google IAM user has the `Cloud KMS CryptoKey Encrypter/Decrypter` role for this key.
+
+Copy the Project, Key Ring and Key storing them as `GOOGLE_KMS_PROJECT`, `GOOGLE_KMS_KEY_RING` and `GOOGLE_KMS_KEY` in your local .env file. As you setup environment-specific .env files, make sure to include these keys in each .env file.
 
 ## Usage
 
 #### Create/edit a .env file
-Run `php artisan env:edit [name]` where `[name]` is the environment you wish to create or edit. This will open the file in `vi` for you to edit. Modify something 
+Run `php artisan env:edit [name]` where `[name]` is the environment you wish to create or edit. This will open the file in `vi` for you to edit. Modify something
 in the file, save, and quit.
 
 #### Decrypt your .env
@@ -84,13 +92,13 @@ If no environment `[name]` is provided, the environment will be determined by yo
 
 ## First deploy
 
-As you're reading through this, you're probably wondering how that *first initial* deploy is going to work. In order for this package to decrypt your .env config where all your sensitive credentials are stored, it needs AWS account access with permission to your KMS key. 
+As you're reading through this, you're probably wondering how that *first initial* deploy is going to work. In order for this package to decrypt your .env config where all your sensitive credentials are stored, it needs AWS account access with permission to your KMS key.
 
 Yep, it's [turtles all the way down](https://en.wikipedia.org/wiki/Turtles_all_the_way_down).
 
 There are a number of ways to handle this, all dependent on the environment and deployment process.
 
-1. If you are using AWS EC2, you can [assign IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html#roles-usingrole-ec2instance-roles) to grant the instance access to your KMS key. 
+1. If you are using AWS EC2, you can [assign IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html#roles-usingrole-ec2instance-roles) to grant the instance access to your KMS key.
 2. Regardless of your host provider, you can always put a `~/.aws/credentials` file on the server to provide necessary KMS permissions.
 3. Many deployment services like [Laravel Forge](https://forge.laravel.com/) or [Laravel Envoyer](https://envoyer.io/) provide ways to specify environment variables which you can use to provide AWS/KMS credentials.
-4. And of course, you can always just ssh in manually to a fresh new server and put the necessary AWS/KMS environment variables in a temporary .env file as well, which will get overwritten on the first deploy.   
+4. And of course, you can always just ssh in manually to a fresh new server and put the necessary AWS/KMS environment variables in a temporary .env file as well, which will get overwritten on the first deploy.

@@ -35,6 +35,13 @@ return [
             'region' => env('AWS_KMS_REGION', env('AWS_REGION', 'us-east-1')),
         ],
 
+        'google_kms' => [
+            'project' => env('GOOGLE_KMS_PROJECT', env('GOOGLE_CLOUD_PROJECT')),
+            'location' => env('GOOGLE_KMS_LOCATION', 'global'),
+            'key_ring' => env('GOOGLE_KMS_KEY_RING'),
+            'key_id' => env('GOOGLE_KMS_KEY'),
+        ],
+
 //        'parameterstore' => [
 //
 //        ],
