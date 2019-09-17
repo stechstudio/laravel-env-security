@@ -97,7 +97,7 @@ class EnvSecurityManager extends Manager
             Arr::get($config, 'project'),
             Arr::get($config, 'location'),
             Arr::get($config, 'key_ring'),
-            Arr::get($config, 'key_id'),
+            Arr::get($config, 'key_id')
         );
     }
 }
