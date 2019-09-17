@@ -58,13 +58,17 @@ By default it will look for a `APP_ENV` environment variable. However you can pr
 
 This way you can resolve out the environment based on hostname, an EC2 instance tag, etc. This will then decrypt the correct .env file based on the environment name you return.
 
-## Drivers
+## Key name resolution
 
-Currently AWS Key Management Service is the only driver. (Others are planned for the future, let us know what you'd like to see!)
+Normally we expect your key name to be specified in the .env file. However you may want to specify _different_ keys depending on the environment. This would allow you to, for example, ensure that 
+
+## Drivers
 
 ### AWS Key Management Service
 
 AWS KMS is a managed service that makes it easy for you to create and control the encryption keys used to encrypt your data, and uses FIPS 140-2 validated hardware security modules to protect the security of your keys.
+
+To use this driver set `ENV_DRIVER=kms` in your .env file.
 
 In the [AWS Console](https://console.aws.amazon.com/iam/home?#/encryptionKeys) create your encryption key. Make sure your AWS IAM user has `kms:Encrypt` and `kms:Decrypt` permissions on this key.
 
@@ -73,6 +77,8 @@ Copy the Key ID and store it as `AWS_KMS_KEY` in your local .env file. As you se
 ### Google Cloud Key Management Service
 
 Google KMS securely manages encryption keys and secrets on Google Cloud Platform. The Google KMS integration with Google HSM makes it simple to create a key protected by a FIPS 140-2 Level 3 device.
+
+To use this driver set `ENV_DRIVER=google_kms` in your .env file.
 
 In the [Google Cloud Console](https://console.cloud.google.com/security/kms) create your key ring and key. Make sure your Google IAM user has the `Cloud KMS CryptoKey Encrypter/Decrypter` role for this key.
 
@@ -84,6 +90,8 @@ Copy the Project, Key Ring and Key storing them as `GOOGLE_KMS_PROJECT`, `GOOGLE
 Run `php artisan env:edit [name]` where `[name]` is the environment you wish to create or edit. This will open the file in `vi` for you to edit. Modify something
 in the file, save, and quit.
 
+_Use the `EDITOR` environment variable to set your preferred editor._
+
 #### Decrypt your .env
 Now you can run `php artisan env:decrypt [name]` which will decrypt the ciphertext file you edited, and write the
 plaintext to your `.env`, replacing anything that was in it. Now if you look at your `.env` you should see your edit.
@@ -92,13 +100,14 @@ If no environment `[name]` is provided, the environment will be determined by yo
 
 ## First deploy
 
-As you're reading through this, you're probably wondering how that *first initial* deploy is going to work. In order for this package to decrypt your .env config where all your sensitive credentials are stored, it needs AWS account access with permission to your KMS key.
+As you're reading through this, you're probably wondering how that *first initial* deploy is going to work. In order for this package to decrypt your .env config where all your sensitive credentials are stored, it needs account credentials with permission to your KMS key.
 
 Yep, it's [turtles all the way down](https://en.wikipedia.org/wiki/Turtles_all_the_way_down).
 
 There are a number of ways to handle this, all dependent on the environment and deployment process.
 
 1. If you are using AWS EC2, you can [assign IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html#roles-usingrole-ec2instance-roles) to grant the instance access to your KMS key.
-2. Regardless of your host provider, you can always put a `~/.aws/credentials` file on the server to provide necessary KMS permissions.
-3. Many deployment services like [Laravel Forge](https://forge.laravel.com/) or [Laravel Envoyer](https://envoyer.io/) provide ways to specify environment variables which you can use to provide AWS/KMS credentials.
-4. And of course, you can always just ssh in manually to a fresh new server and put the necessary AWS/KMS environment variables in a temporary .env file as well, which will get overwritten on the first deploy.
+2. For AWS, you can always put a `~/.aws/credentials` file on the server to provide necessary AWS permissions, regardless of your host.
+3. For GCP your project ID and credentials are [discovered automatically](https://github.com/googleapis/google-cloud-php/blob/master/AUTHENTICATION.md#google-cloud-platform-environments). 
+3. Many deployment services like [Laravel Forge](https://forge.laravel.com/) or [Laravel Envoyer](https://envoyer.io/) provide ways to specify environment variables which you can use to provide credentials.
+4. And of course, you can always just ssh in manually to a fresh new server and put the necessary environment variables in a temporary .env file as well, which will get overwritten on the first deploy.
