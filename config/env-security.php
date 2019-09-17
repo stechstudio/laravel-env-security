@@ -41,13 +41,5 @@ return [
             'key_ring' => env('GOOGLE_KMS_KEY_RING'),
             'key_id' => env('GOOGLE_KMS_KEY'),
         ],
-
-//        'parameterstore' => [
-//
-//        ],
-//
-//        'secrets' => [
-//
-//        ],
     ]
 ];

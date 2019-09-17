@@ -98,7 +98,7 @@ class Edit extends Command
     protected function loadEnvContents()
     {
         if($ciphertext = $this->loadEncrypted($this->environment())) {
-            return $this->envSecurity->decrypt($ciphertext);
+            return $this->envSecurity->setEnvironment($this->environment())->decrypt($ciphertext);
         }
 
         return '';

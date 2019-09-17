@@ -10,6 +10,14 @@ class DecryptTest extends TestCase
 {
     use HandlesEnvFiles;
 
+    /**
+     * Need a specific SP to load a specific artisan command test double
+     */
+    protected function getPackageProviders($app)
+    {
+        return [ServiceProviderDouble::class];
+    }
+
     public function testDecrypt()
     {
         $this->saveEncrypted(EnvSecurity::encrypt('hello world'), 'testing');
@@ -46,5 +54,30 @@ class DecryptTest extends TestCase
 
         $this->assertTrue(file_exists(__DIR__ . "/.env-saved"));
         $this->assertEquals('heya', file_get_contents(__DIR__ . "/.env-saved"));
+    }
+
+    public function testDecryptResolveKey()
+    {
+        // This is the
+        EnvSecurity::resolveEnvironmentUsing(function() {
+            return 'testing';
+        });
+
+        EnvSecurity::resolveKeyUsing(function($environment) {
+            return 'mykey-' . $environment;
+        });
+
+        $this->saveEncrypted(EnvSecurity::encrypt('heya'), 'testing');
+        $this->saveEncrypted(EnvSecurity::encrypt('this is a separate environment file'), 'altenv');
+
+        $this->artisan('env:decrypt')
+            ->expectsOutput('Used key [mykey-testing]');
+
+        // Now specify alternate environment from CLI, ensure we use that environment's key regardless of
+        // our previously provided resolver
+        $this->artisan('env:decrypt altenv')
+            ->expectsOutput('Used key [mykey-altenv]');
+
+        $this->assertEquals('this is a separate environment file', file_get_contents(__DIR__ . "/.env-saved"));
     }
 }

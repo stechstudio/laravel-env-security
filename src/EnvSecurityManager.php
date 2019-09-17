@@ -9,6 +9,9 @@ use Illuminate\Support\Manager;
 use STS\EnvSecurity\Drivers\GoogleKmsDriver;
 use STS\EnvSecurity\Drivers\KmsDriver;
 
+/**
+ *
+ */
 class EnvSecurityManager extends Manager
 {
     /**
@@ -20,6 +23,11 @@ class EnvSecurityManager extends Manager
      * @var callable
      */
     protected $keyResolver;
+
+    /**
+     * @var string
+     */
+    public $environment;
 
     /**
      * @param callable $callback
@@ -34,9 +42,27 @@ class EnvSecurityManager extends Manager
      */
     public function resolveEnvironment()
     {
+        if($this->environment) {
+            return $this->environment;
+        }
+
         return isset($this->environmentResolver)
             ? call_user_func($this->environmentResolver)
             : env('APP_ENV');
+    }
+
+    /**
+     * Setting an environment name explicitly will override any resolver and default
+     *
+     * @param $environment
+     *
+     * @return $this
+     */
+    public function setEnvironment($environment)
+    {
+        $this->environment = $environment;
+
+        return $this;
     }
 
     /**

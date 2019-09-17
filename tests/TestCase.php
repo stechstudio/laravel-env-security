@@ -48,4 +48,13 @@ abstract class TestCase extends BaseTestCase
         Config::set('env-security.store', __DIR__ . '/store');
         Config::set('env-security.destination', __DIR__ . '/.env-saved');
     }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        if(file_exists(__DIR__ . "/.env-saved")) {
+            unlink(__DIR__ . "/.env-saved");
+        }
+    }
 }

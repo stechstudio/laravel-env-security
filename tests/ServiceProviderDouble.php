@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use STS\EnvSecurity\Console\Decrypt;
 use STS\EnvSecurity\EnvSecurityServiceProvider;
 
 class ServiceProviderDouble extends EnvSecurityServiceProvider
@@ -12,6 +11,6 @@ class ServiceProviderDouble extends EnvSecurityServiceProvider
      */
     protected function getConsoleCommands()
     {
-        return [Decrypt::class, EditDouble::class];
+        return [DecryptDouble::class, EditDouble::class];
     }
 }

@@ -58,7 +58,9 @@ class Decrypt extends Command
      */
     public function handle()
     {
-        if (!$environment = $this->getEnvironment()) {
+        $this->envSecurity->setEnvironment($this->environment());
+
+        if (!$environment = $this->environment()) {
             $this->error("No environment specified, and we couldn't resolve it on our own");
 
             return 1;
@@ -84,7 +86,7 @@ class Decrypt extends Command
     /**
      * @return array|string
      */
-    protected function getEnvironment()
+    protected function environment()
     {
         return is_null($this->argument('environment'))
             ? $this->envSecurity->resolveEnvironment()
