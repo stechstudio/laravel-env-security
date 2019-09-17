@@ -60,7 +60,19 @@ This way you can resolve out the environment based on hostname, an EC2 instance 
 
 ## Key name resolution
 
-Normally we expect your key name to be specified in the .env file. However you may want to specify _different_ keys depending on the environment. This would allow you to, for example, ensure that 
+Normally we expect your key name to be specified in the .env file. However you may want to specify _different_ keys depending on the environment. If you have, say, different restricted AWS IAM credentials setup for your environments, this would allow you to ensure each .env file can only be decrypted in the appropriate environment.
+
+Of course your own local IAM credentials would still need full access to all keys, so that you can edit each .env file locally.
+
+To resolve the key name, provide a callback function like this:
+
+```php
+\EnvSecurity::resolveKeyUsing(function($environment) {
+    return "myapp-$environment";
+});
+```
+
+Notice that your resolver will receive the already-resolved environment name, so you can use this to help figure out which key name to return. 
 
 ## Drivers
 
