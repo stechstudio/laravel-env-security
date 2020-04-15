@@ -77,7 +77,7 @@ class Edit extends Command
         fwrite($tmpFile, $contents);
         $meta = stream_get_meta_data($tmpFile);
 
-        $process = new Process(config('env-security.editor') . ' ' . $meta['uri']);
+        $process = new Process([config('env-security.editor'), $meta['uri']]);
         $process->setTty(true);
         $process->mustRun();
 
