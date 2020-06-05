@@ -14,8 +14,7 @@ class Encrypt extends Command
      * @var string
      */
     protected $signature = 'env:encrypt
-                            {environment? : Which environment file you wish to encrypt}
-                            {--o|out= : Saves the encrypted file to an alternate location}';
+                            {environment? : Which environment file you wish to encrypt}';
     /**
      * @var string
      */
