@@ -81,6 +81,11 @@ plaintext to your `.env`, replacing anything that was in it. Now if you look at 
 
 If no environment `[name]` is provided, the environment will be determined by your own custom resolution callback or the `APP_ENV` environment variable.
 
+#### Encrypt and save your current .env
+Sometimes you may want to take your current .env file and encrypt exactly as-is. 
+
+Run `php artisan env:encrypt [name]` to do this, where `name` is the name of the encrypted environment file you wish to create. If you don't provide a name, your current `APP_ENV` environment name will be used.
+
 ## First deploy
 
 As you're reading through this, you're probably wondering how that *first initial* deploy is going to work. In order for this package to decrypt your .env config where all your sensitive credentials are stored, it needs AWS account access with permission to your KMS key. 
