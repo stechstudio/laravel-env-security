@@ -78,6 +78,7 @@ class Edit extends Command
         $meta = stream_get_meta_data($tmpFile);
 
         $process = new Process([config('env-security.editor'), $meta['uri']]);
+        $process->setTimeout(null);
         $process->setTty(true);
         $process->mustRun();
 
