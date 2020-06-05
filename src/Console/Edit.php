@@ -28,7 +28,7 @@ class Edit extends Command
      *
      * @var string
      */
-    protected $signature = 'env:edit {environment : Which environment file you wish to decrypt}';
+    protected $signature = 'env:edit {environment : Which environment file you wish to edit}';
 
     /**
      * The console command description.
