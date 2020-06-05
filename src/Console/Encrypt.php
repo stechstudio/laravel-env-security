@@ -49,9 +49,7 @@ class Encrypt extends Command
             $this->environment()
         );
 
-        $this->info(
-            sprintf('Saved the contents of your current .env file to %s', $this->getFilePathForEnvironment($this->environment()))
-        );
+        $this->info("Saved the contents of your current .env file for environment [{$this->environment()}]");
     }
 
     /**
