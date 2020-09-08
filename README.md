@@ -36,7 +36,7 @@ In your composer.json file add `php artisan env:decrypt` as a post-install hook.
 
 ### Generate configuration (optional)
 
-Default configuration is based on environment variables (e.g. driver, store env, destination file, aws, gcp). If you need to change it generate config by execute:
+Default configuration is based on environment variables (e.g. driver, store env, destination file, aws, gcp). If you need to customize it you can publish the config by running:
 
 `php artisan vendor:publish --provider="STS\EnvSecurity\EnvSecurityServiceProvider" --tag="config"`
 
