@@ -34,6 +34,12 @@ In your composer.json file add `php artisan env:decrypt` as a post-install hook.
         ]
 ```
 
+### Generate configuration (optional)
+
+Default configuration is based on environment variables (e.g. driver, store env, destination file, aws, gcp). If you need to change it generate config by execute:
+
+`php artisan vendor:publish --provider="STS\EnvSecurity\EnvSecurityServiceProvider" --tag="config"`
+
 ### Setup service provider (older versions of Laravel)
 
 If you are using a version of Laravel earlier than 5.5, you will need to manually add the service provider to your `config/app.php` file:
