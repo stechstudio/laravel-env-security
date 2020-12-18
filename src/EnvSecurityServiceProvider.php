@@ -47,7 +47,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
         $this->verifyDirectory();
 
         // If TTY mode is enabled, verify that it is supported.
-        if (config('env.tty_mode')) {
+        if (config('env-security.tty_mode')) {
             $this->verifyTtySupport();
         }
 
