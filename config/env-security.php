@@ -16,7 +16,7 @@ return [
     /**
      * Specify the preferred text editor on your system
      */
-    'editor' => env('EDITOR', 'vi'),
+    'editor' => env('EDITOR', 'nano'),
 
     /**
      * Specify whether to use TTY mode or not.
