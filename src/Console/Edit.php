@@ -80,7 +80,7 @@ class Edit extends Command
         $process = new Process([config('env-security.editor'), $meta['uri']]);
         $process->setTimeout(null);
 
-        $process->setTty(config('env.tty_mode'));
+        $process->setTty(config('env-security.tty_mode'));
 
         $process->mustRun();
 
