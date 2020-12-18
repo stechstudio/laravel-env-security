@@ -34,12 +34,11 @@ In your composer.json file add `php artisan env:decrypt` as a post-install hook.
         ]
 ```
 
-> On Windows:
+> Windows Platforms:
 >
-> [TTY Mode](https://unix.stackexchange.com/questions/4126/what-is-the-exact-difference-between-a-terminal-a-shell-a-tty-and-a-con) is the set true by default. The Windows console does not support TTY, so you must disable in your `.env` with:
-```
-TTY_MODE=false
-```
+> [TTY Mode](https://unix.stackexchange.com/questions/4126/what-is-the-exact-difference-between-a-terminal-a-shell-a-tty-and-a-con) is the set true by default. The Windows console does not support TTY, so you must disable in your `.env` with `TTY_MODE=false`.
+>
+> We are aware that [Windows Console introduced a pseudo TTY (PTY) infrastructure](https://devblogs.microsoft.com/commandline/windows-command-line-introducing-the-windows-pseudo-console-conpty/) in the most recent consoled. If you would like the package to support that, we leverage the [Symfony Process Component](https://symfony.com/doc/current/components/process.html) which fails hard on attempting to use TTY/PTY in on any Windows Platform. Once Symfony supports it, we will as well.
 
 ### Generate configuration (optional)
 
