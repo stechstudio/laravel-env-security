@@ -79,7 +79,9 @@ class Edit extends Command
 
         $process = new Process([config('env-security.editor'), $meta['uri']]);
         $process->setTimeout(null);
-        $process->setTty(true);
+
+        $process->setTty(config('env.tty_mode'));
+
         $process->mustRun();
 
         return file_get_contents($meta['uri']);
@@ -98,7 +100,7 @@ class Edit extends Command
      */
     protected function loadEnvContents()
     {
-        if($ciphertext = $this->loadEncrypted($this->environment())) {
+        if ($ciphertext = $this->loadEncrypted($this->environment())) {
             return $this->envSecurity->setEnvironment($this->environment())->decrypt($ciphertext);
         }
 
