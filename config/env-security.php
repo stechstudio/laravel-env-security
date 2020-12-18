@@ -1,8 +1,8 @@
 <?php
 /*
- * This file is part of laravel-env-security.
- *
- *  (c) Signature Tech Studio, Inc <info@stechstudio.com>
+                     * This file is part of laravel-env-security.
+                     *
+                     *  (c) Signature Tech Studio, Inc <info@stechstudio.com>
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
@@ -11,12 +11,17 @@ return [
     /**
      * This is the default driver we'll use to manage encryption/decryption
      */
-    'default' => env('ENV_DRIVER','kms'),
+    'default' => env('ENV_DRIVER', 'kms'),
 
     /**
      * Specify the preferred text editor on your system
      */
     'editor' => env('EDITOR', 'vi'),
+
+    /**
+     * Specify whether to use TTY mode or not.
+     */
+    'tty_mode' => env('TTY_MODE', true),
 
     /**
      * The directory where should we keep the encrypted .env files
