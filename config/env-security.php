@@ -21,7 +21,7 @@ return [
     /**
      * Specify whether to use TTY mode or not.
      */
-    'tty_mode' => env('TTY_MODE', true),
+    'tty_mode' => env('TTY_MODE', null),
 
     /**
      * The directory where should we keep the encrypted .env files

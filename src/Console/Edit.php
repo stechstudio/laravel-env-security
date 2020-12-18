@@ -82,9 +82,30 @@ class Edit extends Command
 
         $process->setTty(config('env-security.tty_mode'));
 
+        $process->setTty(
+            is_bool(config('env-security.tty_mode'))
+                ? config('env-security.tty_mode')
+                : $this->isTtySupported()
+        );
+
         $process->mustRun();
 
         return file_get_contents($meta['uri']);
+    }
+
+    /**
+     * Determines whether TTY is supported on the current operating system.
+     * 
+     * @return bool
+     * @throws RuntimeException 
+     */
+    public function isTtySupported(): bool
+    {
+        if ('\\' === \DIRECTORY_SEPARATOR) {
+            return false;
+        }
+
+        return (bool) @proc_open('echo 1 >/dev/null', [['file', '/dev/tty', 'r'], ['file', '/dev/tty', 'w'], ['file', '/dev/tty', 'w']], $pipes);
     }
 
     /**

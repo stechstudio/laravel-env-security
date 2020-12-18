@@ -46,34 +46,8 @@ class EnvSecurityServiceProvider extends ServiceProvider
 
         $this->verifyDirectory();
 
-        // If TTY mode is enabled, verify that it is supported.
-        if (config('env-security.tty_mode')) {
-            $this->verifyTtySupport();
-        }
-
         if ($this->app->runningInConsole()) {
             $this->commands($this->getConsoleCommands());
-        }
-    }
-
-    /**
-     * Determines whether TTY is supported on the current operating system.
-     * 
-     * @return void 
-     * @throws RuntimeException 
-     */
-    public function verifyTtySupport(): void
-    {
-        // If this is PHP compiled for windows, ensure the developer understands
-        // TTY mode is not a valid option at all.
-        if ('\\' === \DIRECTORY_SEPARATOR) {
-            throw new RuntimeException('TTY mode is not supported in PHP for the Windows platform. Please disable TTY_MODE=false in your configuration.');
-        }
-
-        $result = (bool) @proc_open('echo 1 >/dev/null', [['file', '/dev/tty', 'r'], ['file', '/dev/tty', 'w'], ['file', '/dev/tty', 'w']], $pipes);
-
-        if ($result !== true) {
-            throw new RuntimeException('TTY mode is not supported .');
         }
     }
 
