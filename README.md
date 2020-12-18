@@ -34,6 +34,13 @@ In your composer.json file add `php artisan env:decrypt` as a post-install hook.
         ]
 ```
 
+> On Windows:
+>
+> [TTY Mode](https://unix.stackexchange.com/questions/4126/what-is-the-exact-difference-between-a-terminal-a-shell-a-tty-and-a-con) is the set true by default. The Windows console does not support TTY, so you must disable in your `.env` with:
+```
+TTY_MODE=false
+```
+
 ### Generate configuration (optional)
 
 Default configuration is based on environment variables (e.g. driver, store env, destination file, aws, gcp). If you need to customize it you can publish the config by running:
