@@ -83,7 +83,7 @@ class Edit extends Command
         $process->mustRun();
         if (!Process::isTtySupported()) {
           while (empty(file_get_contents($meta['uri'])) || file_get_contents($meta['uri']) === $contents) {
-            sleep(10);
+            sleep(2);
           }
         }
 
