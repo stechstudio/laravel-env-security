@@ -88,7 +88,7 @@ class EnvSecurityManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return $this->container['config']['env-security.default'];
+        return config('env-security.default');
     }
 
     /**
@@ -96,7 +96,7 @@ class EnvSecurityManager extends Manager
      */
     public function createKmsDriver()
     {
-        $config = $this->container['config']['env-security.drivers.kms'];
+        $config = config('env-security.drivers.kms');
 
         $key = $this->keyResolver
             ? $this->resolveKey()
@@ -110,7 +110,7 @@ class EnvSecurityManager extends Manager
      */
     public function createGoogleKmsDriver()
     {
-        $config = $this->container['config']['env-security.drivers.google_kms'];
+        $config = config('env-security.drivers.google_kms');
 
         if ($this->keyResolver) {
             $config['key_id'] = $this->resolveKey();
