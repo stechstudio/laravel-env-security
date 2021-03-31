@@ -3,7 +3,7 @@
     "description": "Securely manage .env files for different deployment environments",
     "type": "library",
     "require": {
-        "php": "^5.6|^7.0",
+        "php": "^5.6|^7.0|^8.0",
         "aws/aws-sdk-php": "^3.0",
         "illuminate/support": "^5.6|^6.0|^7.0|^8.0",
         "google/cloud-kms": "^1.7"
