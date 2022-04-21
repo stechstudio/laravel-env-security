@@ -13,13 +13,13 @@ class EncryptTest extends TestCase
     public function testEncrypt()
     {
         @unlink($this->getFilePathForEnvironment('testing'));
-        file_put_contents(base_path('.env'), "encrypt this");
+        file_put_contents(base_path('.env'), "encrypt=this");
 
         $this->artisan('env:encrypt testing')
             ->expectsOutput('Saved the contents of your current .env file for environment [testing]');
 
         $this->assertTrue(file_exists($this->getFilePathForEnvironment('testing')));
-        $this->assertEquals('encrypt this', EnvSecurity::decrypt($this->loadEncrypted("testing")));
+        $this->assertEquals('encrypt=this', EnvSecurity::decrypt($this->loadEncrypted("testing")));
     }
 
     public function testEncryptMissingFile()

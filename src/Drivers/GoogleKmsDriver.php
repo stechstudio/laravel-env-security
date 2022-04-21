@@ -65,4 +65,13 @@ class GoogleKmsDriver implements Encrypter
 
         return $this->client->decrypt($this->keyName, $payload)->getPlaintext();
     }
+
+    /**
+     * @return string
+     */
+    public function getKey()
+    {
+        // We have no key to return. This exists purely to comply with the interface.
+        return '';
+    }
 }
