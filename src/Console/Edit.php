@@ -56,6 +56,8 @@ class Edit extends Command
      */
     public function handle()
     {
+        $this->envSecurity->setEnvironment($this->environment());
+
         $this->saveEnvContents(
             $this->edit(
                 $this->loadEnvContents()
@@ -104,7 +106,7 @@ class Edit extends Command
     protected function loadEnvContents()
     {
         if($ciphertext = $this->loadEncrypted($this->environment())) {
-            return $this->envSecurity->setEnvironment($this->environment())->decrypt($ciphertext);
+            return $this->envSecurity->decrypt($ciphertext);
         }
 
         return '';
