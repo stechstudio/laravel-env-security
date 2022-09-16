@@ -30,7 +30,7 @@ class EnvSecurityManager extends Manager
     public $environment;
 
     /**
-     * @param callable $callback
+     * @param  callable  $callback
      */
     public function resolveEnvironmentUsing($callback)
     {
@@ -42,13 +42,13 @@ class EnvSecurityManager extends Manager
      */
     public function resolveEnvironment()
     {
-        if($this->environment) {
+        if ($this->environment) {
             return $this->environment;
         }
 
         return isset($this->environmentResolver)
             ? call_user_func($this->environmentResolver)
-            : env('APP_ENV');
+            : config('app.env');
     }
 
     /**
