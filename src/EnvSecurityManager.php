@@ -126,4 +126,54 @@ class EnvSecurityManager extends Manager
             Arr::get($config, 'key_id')
         );
     }
+
+    /**
+     * Encrypt the value.
+     *
+     * @param  string  $value
+     * @param  bool  $serialize
+     * @return string
+     */
+    public function encrypt($value, $serialize = true)
+    {
+        // Compress Value
+        if (config('env-security.enable_compression')) {
+            $this->checkZlibExtension();
+            $value = gzencode($value, 9);
+        }
+        // Encode Value
+        return $this->driver()->encrypt($value, $serialize);
+    }
+
+    /**
+     * Decrypt the value.
+     *
+     * @param  string  $value
+     * @param  bool  $unserialize
+     * @return string
+     */
+    public function decrypt($value, $unserialize = true)
+    {
+        $value = $this->driver()->decrypt($value, $unserialize);
+
+        // De-compress Value
+        if (config('env-security.enable_compression')) {
+            $this->checkZlibExtension();
+            $decodedValue = gzdecode($value);
+
+            // @todo Determine if this should be default behavior
+            // Failed to decompress the value, returning the value instead.
+            $value = $decodedValue !== false ? $decodedValue : $value;
+        }
+
+        return $value;
+    }
+
+    private function checkZlibExtension()
+    {
+        if (!in_array('zlib', get_loaded_extensions())) {
+            throw new \RuntimeException('Laravel Env Security compression is enabled, but the zlib extension is not installed.');
+        }
+    }
+
 }
