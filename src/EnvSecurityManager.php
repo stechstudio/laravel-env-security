@@ -141,8 +141,12 @@ class EnvSecurityManager extends Manager
     {
         // Compress Value
         if (config('env-security.enable_compression')) {
-            $this->checkZlibExtension();
-            $value = gzencode($value, 9);
+            $this->checkZlibExtension('Laravel Env Security compression is enabled, but the zlib extension is not installed.');
+            if (($compressed = gzencode($value, 9)) === false) {
+                throw new RuntimeException('Failed to compress the content.');
+            }
+
+            $value = "gzencoded::${compressed}";
         }
         // Encode Value
         return $this->driver()->encrypt($value, $serialize);
@@ -158,15 +162,9 @@ class EnvSecurityManager extends Manager
     public function decrypt($value, $unserialize = true)
     {
         $value = $this->driver()->decrypt($value, $unserialize);
-
-        // De-compress Value
-        if (config('env-security.enable_compression')) {
-            $this->checkZlibExtension();
-            $decodedValue = gzdecode($value);
-
-            // @todo Determine if this should be default behavior
-            // Failed to decompress the value, returning the value instead.
-            $value = $decodedValue !== false ? $decodedValue : $value;
+        
+        if (Str::substr($value, 0, strlen('gzencoded::')) === 'gzencoded::') {
+            $value = $this->decompress($value);
         }
 
         return $value;
