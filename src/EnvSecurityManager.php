@@ -3,9 +3,12 @@
 namespace STS\EnvSecurity;
 
 use Aws\Kms\KmsClient;
+use ErrorException;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Manager;
+use Illuminate\Support\Str;
+use RuntimeException;
 use STS\EnvSecurity\Drivers\GoogleKmsDriver;
 use STS\EnvSecurity\Drivers\KmsDriver;
 
@@ -172,7 +175,7 @@ class EnvSecurityManager extends Manager
     private function checkZlibExtension()
     {
         if (!in_array('zlib', get_loaded_extensions())) {
-            throw new \RuntimeException('Laravel Env Security compression is enabled, but the zlib extension is not installed.');
+            throw new RuntimeException($message);
         }
     }
 
