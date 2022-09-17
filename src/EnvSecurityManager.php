@@ -172,7 +172,35 @@ class EnvSecurityManager extends Manager
         return $value;
     }
 
-    private function checkZlibExtension()
+    /**
+     * @param $value
+     * @return string
+     * @throws RuntimeException
+     */
+    private function decompress($value)
+    {
+        $this->checkZlibExtension('The environment file was compressed and can not be decompressed because the zlib extension is not installed.');
+        try {
+            \set_error_handler(
+                static function ($errno, $errstr, $errfile, $errline) {
+                    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+                },
+                E_WARNING);
+            $result = gzdecode(Str::substr($value, strlen('gzencoded::')));
+        } catch (ErrorException $previous) {
+            throw new RuntimeException(
+                'The unencrypted data is corrupt and can not be uncompressed.',
+                0,
+                $previous
+            );
+        } finally {
+            \restore_error_handler();
+        }
+
+        return $result;
+    }
+
+    private function checkZlibExtension($message)
     {
         if (!in_array('zlib', get_loaded_extensions())) {
             throw new RuntimeException($message);
