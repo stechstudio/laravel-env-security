@@ -31,7 +31,7 @@ class Edit extends Command
      */
     protected $signature = 'env:edit 
                             {environment : Which environment file you wish to edit}
-                            {--C|compress : Override configuration and require compression.';
+                            {--C|compress : Override configuration and require compression.}';
 
     /**
      * The console command description.

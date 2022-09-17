@@ -17,7 +17,7 @@ class Encrypt extends Command
      */
     protected $signature = 'env:encrypt
                             {environment? : Which environment file you wish to encrypt}
-                            {--C|compress : Override configuration and require compression.';
+                            {--c|compress : Override configuration and require compression.}';
     /**
      * @var string
      */
@@ -43,6 +43,7 @@ class Encrypt extends Command
      */
     public function handle()
     {
+
         if ($this->option('compress')) {
             Config::set('env-security.enable_compression', true);
         }
