@@ -11,6 +11,7 @@
 namespace STS\EnvSecurity\Console;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
 use STS\EnvSecurity\EnvSecurityManager;
 use Symfony\Component\Process\Process;
@@ -28,7 +29,9 @@ class Edit extends Command
      *
      * @var string
      */
-    protected $signature = 'env:edit {environment : Which environment file you wish to edit}';
+    protected $signature = 'env:edit 
+                            {environment : Which environment file you wish to edit}
+                            {--C|compress : Override configuration and require compression.';
 
     /**
      * The console command description.
@@ -56,6 +59,9 @@ class Edit extends Command
      */
     public function handle()
     {
+        if ($this->option('compress')) {
+            Config::set('env-security.enable_compression', true);
+        }
         $this->envSecurity->setEnvironment($this->environment());
 
         $this->saveEnvContents(
@@ -84,9 +90,9 @@ class Edit extends Command
         $process->setTty(Process::isTtySupported());
         $process->mustRun();
         if (!Process::isTtySupported()) {
-          while (empty(file_get_contents($meta['uri'])) || file_get_contents($meta['uri']) === $contents) {
-            sleep(2);
-          }
+            while (empty(file_get_contents($meta['uri'])) || file_get_contents($meta['uri']) === $contents) {
+                sleep(2);
+            }
         }
 
         return file_get_contents($meta['uri']);
@@ -105,7 +111,7 @@ class Edit extends Command
      */
     protected function loadEnvContents()
     {
-        if($ciphertext = $this->loadEncrypted($this->environment())) {
+        if ($ciphertext = $this->loadEncrypted($this->environment())) {
             return $this->envSecurity->decrypt($ciphertext);
         }
 
