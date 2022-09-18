@@ -26,35 +26,38 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        @mkdir(__DIR__ . '/store');
+        @mkdir(__DIR__.'/store');
 
-        EnvSecurity::extend('laravel', function() {
+        EnvSecurity::extend('laravel', function () {
             return app('encrypter');
         });
 
-        EnvSecurity::extend('test', function() {
+        EnvSecurity::extend('test', function () {
             return new class {
-                public function encrypt($plaintext) {
+                public function encrypt($plaintext)
+                {
                     return base64_encode($plaintext);
                 }
 
-                public function decrypt($ciphertext) {
+                public function decrypt($ciphertext)
+                {
                     return base64_decode($ciphertext);
                 }
             };
         });
 
         Config::set('env-security.default', 'test');
-        Config::set('env-security.store', __DIR__ . '/store');
-        Config::set('env-security.destination', __DIR__ . '/.env-saved');
+        Config::set('env-security.store', __DIR__.'/store');
+        Config::set('env-security.destination', __DIR__.'/.env-saved');
+        Config::set('env-security.enable_compression', false);
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        if(file_exists(__DIR__ . "/.env-saved")) {
-            unlink(__DIR__ . "/.env-saved");
+        if (file_exists(__DIR__."/.env-saved")) {
+            unlink(__DIR__."/.env-saved");
         }
     }
 }
