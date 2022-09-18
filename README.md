@@ -16,7 +16,9 @@ Our package is different in the following ways:
 2) We need to manage .env files for multiple environments (like qa, uat, production). This package allows you to manage any number of environment-specific .env files.
 3) We wanted to leverage services like AWS Key Management Service to handle encryption/decryption, with the option to add other encryption drivers (like ansible) or secrets management services (like AWS Secrets Manager) in the future.
 
-## Installation and setup
+## Installation and Setup
+### Prerequisites
+If you intend to enable compression you must have the [Zlib Compression Extension](https://www.php.net/manual/en/book.zlib.php) installed and enabled.
 
 ### Install the package
 
