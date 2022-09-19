@@ -9,7 +9,7 @@ class ServiceProviderDouble extends EnvSecurityServiceProvider
     /**
      * Register our console commands
      */
-    protected function getConsoleCommands()
+    protected function getConsoleCommands(): array
     {
         return [DecryptDouble::class, EditDouble::class];
     }

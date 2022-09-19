@@ -9,11 +9,11 @@ use STS\EnvSecurity\Console\Decrypt;
  */
 class DecryptDouble extends Decrypt
 {
-    public function handle()
+    public function handle(): int
     {
         $result = parent::handle();
 
-        $this->info("Used key [" . $this->envSecurity->resolveKey() . "]");
+        $this->info("Used key [".$this->envSecurity->resolveKey()."]");
 
         return $result;
     }

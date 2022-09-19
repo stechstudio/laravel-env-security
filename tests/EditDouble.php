@@ -11,12 +11,12 @@ class EditDouble extends Edit
 {
     protected $signature = 'env:edit {environment : Which environment file you wish to decrypt} {--c|compress : Override configuration and require compression.} {--append=} ';
 
-    protected function environment()
+    protected function environment(): string
     {
         return "testing";
     }
 
-    protected function edit($contents)
+    protected function edit($contents): string
     {
         $this->info('Plaintext contents: '.$contents);
 
