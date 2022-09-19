@@ -43,7 +43,7 @@ class EnvSecurityManager extends Manager
     /**
      * @return string|null
      */
-    public function resolveEnvironment()
+    public function resolveEnvironment(): ?string
     {
         if ($this->environment) {
             return $this->environment;
@@ -61,7 +61,7 @@ class EnvSecurityManager extends Manager
      *
      * @return $this
      */
-    public function setEnvironment($environment)
+    public function setEnvironment($environment): static
     {
         $this->environment = $environment;
 
@@ -79,7 +79,7 @@ class EnvSecurityManager extends Manager
     /**
      * @return string|null
      */
-    public function resolveKey()
+    public function resolveKey(): ?string
     {
         return isset($this->keyResolver)
             ? call_user_func($this->keyResolver, $this->resolveEnvironment())
@@ -89,7 +89,7 @@ class EnvSecurityManager extends Manager
     /**
      * @return string
      */
-    public function getDefaultDriver()
+    public function getDefaultDriver(): string
     {
         return config('env-security.default');
     }
@@ -97,7 +97,7 @@ class EnvSecurityManager extends Manager
     /**
      * @return KmsDriver
      */
-    public function createKmsDriver()
+    public function createKmsDriver(): KmsDriver
     {
         $config = config('env-security.drivers.kms');
 
@@ -111,7 +111,7 @@ class EnvSecurityManager extends Manager
     /**
      * @return GoogleKmsDriver
      */
-    public function createGoogleKmsDriver()
+    public function createGoogleKmsDriver(): GoogleKmsDriver
     {
         $config = config('env-security.drivers.google_kms');
 
@@ -137,7 +137,7 @@ class EnvSecurityManager extends Manager
      * @param  bool  $serialize
      * @return string
      */
-    public function encrypt($value, $serialize = true)
+    public function encrypt($value, $serialize = true): string
     {
         // Compress Value
         if (config('env-security.enable_compression')) {
@@ -159,10 +159,10 @@ class EnvSecurityManager extends Manager
      * @param  bool  $unserialize
      * @return string
      */
-    public function decrypt($value, $unserialize = true)
+    public function decrypt($value, $unserialize = true): string
     {
         $value = $this->driver()->decrypt($value, $unserialize);
-        
+
         if (Str::substr($value, 0, strlen('gzencoded::')) === 'gzencoded::') {
             $value = $this->decompress($value);
         }
@@ -175,7 +175,7 @@ class EnvSecurityManager extends Manager
      * @return string
      * @throws RuntimeException
      */
-    private function decompress($value)
+    private function decompress($value): string
     {
         $this->checkZlibExtension('The environment file was compressed and can not be decompressed because the zlib extension is not installed.');
         try {

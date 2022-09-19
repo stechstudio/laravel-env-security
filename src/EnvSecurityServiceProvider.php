@@ -10,11 +10,11 @@
 
 namespace STS\EnvSecurity;
 
-use STS\EnvSecurity\Console\Encrypt;
 use Illuminate\Support\ServiceProvider;
 use RuntimeException;
 use STS\EnvSecurity\Console\Decrypt;
 use STS\EnvSecurity\Console\Edit;
+use STS\EnvSecurity\Console\Encrypt;
 use function config;
 use function sprintf;
 
@@ -32,7 +32,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $configPath = __DIR__ . '/../config/env-security.php';
+    protected $configPath = __DIR__.'/../config/env-security.php';
 
     public function boot()
     {
@@ -57,8 +57,8 @@ class EnvSecurityServiceProvider extends ServiceProvider
     protected function verifyDirectory()
     {
         try {
-            if (! is_dir(config('env-security.store'))) {
-                if (! mkdir(config('env-security.store'))) {
+            if (!is_dir(config('env-security.store'))) {
+                if (!mkdir(config('env-security.store'))) {
                     throw new RuntimeException(
                         sprintf('Error creating the cipertext directory - %s', config('env-security.store'))
                     );
@@ -76,7 +76,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
     /**
      * Register our console commands
      */
-    protected function getConsoleCommands()
+    protected function getConsoleCommands(): array
     {
         return [Decrypt::class, Edit::class, Encrypt::class];
     }
@@ -86,7 +86,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return ['sts.env-security', EnvSecurityManager::class];
     }

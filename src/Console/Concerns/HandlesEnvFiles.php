@@ -13,7 +13,7 @@ trait HandlesEnvFiles
      *
      * @return bool|null|string
      */
-    protected function loadEncrypted($environment)
+    protected function loadEncrypted($environment): bool|string|null
     {
         $path = $this->getFilePathForEnvironment($environment);
 
@@ -30,7 +30,7 @@ trait HandlesEnvFiles
      *
      * @return bool
      */
-    protected function saveEncrypted($ciphertext, $environment)
+    protected function saveEncrypted($ciphertext, $environment): bool
     {
         $path = $this->getFilePathForEnvironment($environment);
 
@@ -39,11 +39,11 @@ trait HandlesEnvFiles
 
     /**
      * @param      $plaintext
-     * @param null $output
+     * @param  null  $output
      *
      * @return bool
      */
-    protected function saveDecrypted($plaintext, $output = null)
+    protected function saveDecrypted($plaintext, $output = null): bool
     {
         if (!$output) {
             $output = config('env-security.destination');
@@ -57,8 +57,8 @@ trait HandlesEnvFiles
      *
      * @return string
      */
-    protected function getFilePathForEnvironment($environment)
+    protected function getFilePathForEnvironment($environment): string
     {
-        return config('env-security.store') . '/' . $environment . '.env.enc';
+        return config('env-security.store').'/'.$environment.'.env.enc';
     }
 }

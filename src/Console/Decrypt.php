@@ -10,8 +10,8 @@
 
 namespace STS\EnvSecurity\Console;
 
-use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
 use Illuminate\Console\Command;
+use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
 use STS\EnvSecurity\EnvSecurityManager;
 
 
@@ -54,9 +54,9 @@ class Decrypt extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $this->envSecurity->setEnvironment($this->environment());
 
@@ -81,12 +81,13 @@ class Decrypt extends Command
         }
 
         $this->info("Successfully decrypted .env for environment [$environment]");
+        return 0;
     }
 
     /**
      * @return array|string
      */
-    protected function environment()
+    protected function environment(): array|string
     {
         return is_null($this->argument('environment'))
             ? $this->envSecurity->resolveEnvironment()

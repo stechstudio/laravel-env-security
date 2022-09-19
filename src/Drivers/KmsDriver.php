@@ -39,7 +39,7 @@ class KmsDriver implements Encrypter
      *
      * @return mixed|string
      */
-    public function encrypt($value, $serialize = true)
+    public function encrypt($value, $serialize = true): mixed
     {
         $result = $this->client->encrypt([
             'KeyId'     => $this->keyId,
@@ -57,7 +57,7 @@ class KmsDriver implements Encrypter
      *
      * @return string
      */
-    public function decrypt($payload, $unserialize = true)
+    public function decrypt($payload, $unserialize = true): string
     {
         if ($unserialize) {
             $payload = base64_decode($payload);
@@ -72,7 +72,7 @@ class KmsDriver implements Encrypter
     /**
      * @return string
      */
-    public function getKey()
+    public function getKey(): string
     {
         // We have no key to return. This exists purely to comply with the interface.
         return '';

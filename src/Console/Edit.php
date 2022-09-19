@@ -57,7 +57,7 @@ class Edit extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
         if ($this->option('compress')) {
             Config::set('env-security.enable_compression', true);
@@ -71,6 +71,7 @@ class Edit extends Command
         );
 
         $this->info("Successfully updated .env for environment [{$this->environment()}]");
+        return 0;
     }
 
     /**
@@ -79,7 +80,7 @@ class Edit extends Command
      *
      * @return mixed
      */
-    protected function edit($contents)
+    protected function edit($contents): mixed
     {
         $tmpFile = tmpfile();
         fwrite($tmpFile, $contents);
@@ -101,7 +102,7 @@ class Edit extends Command
     /**
      * @return string
      */
-    protected function environment()
+    protected function environment(): string
     {
         return $this->argument('environment');
     }
@@ -109,7 +110,7 @@ class Edit extends Command
     /**
      * @return string
      */
-    protected function loadEnvContents()
+    protected function loadEnvContents(): string
     {
         if ($ciphertext = $this->loadEncrypted($this->environment())) {
             return $this->envSecurity->decrypt($ciphertext);

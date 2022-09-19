@@ -39,16 +39,17 @@ class Encrypt extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
 
         if ($this->option('compress')) {
             Config::set('env-security.enable_compression', true);
         }
         if (!File::isReadable($this->path())) {
-            return $this->error("Make sure you have a .env file in your base project path");
+            $this->error("Make sure you have a .env file in your base project path");
+            return;
         }
 
         $this->saveEncrypted(
@@ -62,7 +63,7 @@ class Encrypt extends Command
     /**
      * @return string
      */
-    protected function environment()
+    protected function environment(): string
     {
         return $this->argument('environment') ?: config('app.env');
     }
@@ -70,7 +71,7 @@ class Encrypt extends Command
     /**
      * @return string
      */
-    protected function path()
+    protected function path(): string
     {
         return base_path('.env');
     }
