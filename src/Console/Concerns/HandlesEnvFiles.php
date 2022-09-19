@@ -17,7 +17,7 @@ trait HandlesEnvFiles
     {
         $path = $this->getFilePathForEnvironment($environment);
 
-        if (file_exists($path) && is_readable($path)) {
+        if (is_file($path) && is_readable($path)) {
             return file_get_contents($path);
         }
 
