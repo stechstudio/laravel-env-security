@@ -2,6 +2,7 @@
 
 namespace STS\EnvSecurity\Drivers;
 
+use Google\ApiCore\ApiException;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 use Illuminate\Contracts\Encryption\Encrypter;
 
@@ -44,10 +45,10 @@ class GoogleKmsDriver implements Encrypter
     /**
      * @param  string  $value
      * @param  bool  $serialize
-     *
-     * @return mixed|string
+     * @return string
+     * @throws ApiException
      */
-    public function encrypt($value, $serialize = true): mixed
+    public function encrypt($value, $serialize = true): string
     {
         $result = $this->client->encrypt($this->keyName, $value)->getCiphertext();
 
@@ -58,13 +59,13 @@ class GoogleKmsDriver implements Encrypter
 
     /**
      * @param  string  $payload
-     * @param  bool  $unserialize
-     *
+     * @param  bool  $deserialize
      * @return string
+     * @throws ApiException
      */
-    public function decrypt($payload, $unserialize = true): string
+    public function decrypt($payload, $deserialize = true): string
     {
-        if ($unserialize) {
+        if ($deserialize) {
             $payload = base64_decode($payload);
         }
 
