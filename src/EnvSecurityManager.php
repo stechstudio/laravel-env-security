@@ -161,12 +161,12 @@ class EnvSecurityManager extends Manager
      * Decrypt the value.
      *
      * @param  string  $value
-     * @param  bool  $unserialize
+     * @param  bool  $deserialize
      * @return string
      */
-    public function decrypt(string $value, bool $unserialize = true): string
+    public function decrypt(string $value, bool $deserialize = true): string
     {
-        $value = $this->driver()->decrypt($value, $unserialize);
+        $value = $this->driver()->decrypt($value, $deserialize);
 
         if (Str::substr($value, 0, strlen('gzencoded::')) === 'gzencoded::') {
             $value = $this->decompress($value);
