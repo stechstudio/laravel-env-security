@@ -57,12 +57,10 @@ class EnvSecurityServiceProvider extends ServiceProvider
     protected function verifyDirectory()
     {
         try {
-            if (!is_dir(config('env-security.store'))) {
-                if (!mkdir(config('env-security.store'))) {
-                    throw new RuntimeException(
-                        sprintf('Error creating the cipertext directory - %s', config('env-security.store'))
-                    );
-                }
+            if (!is_dir(config('env-security.store')) && !mkdir($concurrentDirectory = config('env-security.store')) && !is_dir($concurrentDirectory)) {
+                throw new RuntimeException(
+                    sprintf('Error creating the cipertext directory - %s', config('env-security.store'))
+                );
             }
         } catch (\Throwable $e) {
             throw new RuntimeException(
