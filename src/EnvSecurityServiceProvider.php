@@ -60,12 +60,12 @@ class EnvSecurityServiceProvider extends ServiceProvider
         try {
             if (!is_dir(config('env-security.store')) && !mkdir($concurrentDirectory = config('env-security.store')) && !is_dir($concurrentDirectory)) {
                 throw new RuntimeException(
-                    sprintf('Error creating the cipertext directory - %s', config('env-security.store'))
+                    sprintf('Error creating the ciphertext directory - %s', config('env-security.store'))
                 );
             }
         } catch (Throwable $e) {
             throw new RuntimeException(
-                sprintf('Error creating the cipertext directory - %s', config('env-security.store')),
+                sprintf('Error creating the ciphertext directory - %s', config('env-security.store')),
                 $e->getCode(),
                 $e
             );
