@@ -78,9 +78,9 @@ class Edit extends Command
      * @param $contents
      * @codeCoverageIgnore
      *
-     * @return mixed
+     * @return string|bool
      */
-    protected function edit($contents): mixed
+    protected function edit($contents): string|bool
     {
         $tmpFile = tmpfile();
         fwrite($tmpFile, $contents);
