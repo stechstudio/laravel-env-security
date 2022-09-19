@@ -4,6 +4,7 @@ namespace STS\EnvSecurity;
 
 use Aws\Kms\KmsClient;
 use ErrorException;
+use Google\ApiCore\ValidationException;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Manager;
@@ -110,6 +111,7 @@ class EnvSecurityManager extends Manager
 
     /**
      * @return GoogleKmsDriver
+     * @throws ValidationException
      */
     public function createGoogleKmsDriver(): GoogleKmsDriver
     {
