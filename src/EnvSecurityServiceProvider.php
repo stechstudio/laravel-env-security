@@ -25,14 +25,14 @@ class EnvSecurityServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = false;
+    protected bool $defer = false;
 
     /**
      * Default path to configuration.
      *
      * @var string
      */
-    protected $configPath = __DIR__.'/../config/env-security.php';
+    protected string $configPath = __DIR__.'/../config/env-security.php';
 
     public function boot()
     {

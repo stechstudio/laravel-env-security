@@ -14,21 +14,21 @@ class GoogleKmsDriver implements Encrypter
     /**
      * @var KeyManagementServiceClient
      */
-    protected $client;
+    protected KeyManagementServiceClient $client;
 
     /**
      * @var string
      */
-    protected $keyName;
+    protected string $keyName;
 
     /**
      * KmsDriver constructor.
      *
-     * @param KeyManagementServiceClient $client
-     * @param string $project
-     * @param string $location
-     * @param string $keyRing
-     * @param string $key
+     * @param  KeyManagementServiceClient  $client
+     * @param  string  $project
+     * @param  string  $location
+     * @param  string  $keyRing
+     * @param  string  $key
      */
     public function __construct(KeyManagementServiceClient $client, $project, $location, $keyRing, $key)
     {
@@ -37,8 +37,8 @@ class GoogleKmsDriver implements Encrypter
     }
 
     /**
-     * @param string $value
-     * @param bool   $serialize
+     * @param  string  $value
+     * @param  bool  $serialize
      *
      * @return mixed|string
      */
@@ -52,8 +52,8 @@ class GoogleKmsDriver implements Encrypter
     }
 
     /**
-     * @param string $payload
-     * @param bool   $unserialize
+     * @param  string  $payload
+     * @param  bool  $unserialize
      *
      * @return string
      */

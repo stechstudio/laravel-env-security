@@ -30,7 +30,7 @@ class EnvSecurityManager extends Manager
     /**
      * @var string
      */
-    public $environment;
+    public string $environment;
 
     /**
      * @param  callable  $callback

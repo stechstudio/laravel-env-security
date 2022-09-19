@@ -43,7 +43,7 @@ class Edit extends Command
     /**
      * @var EnvSecurityManager
      */
-    protected $envSecurity;
+    protected EnvSecurityManager $envSecurity;
 
     public function __construct(EnvSecurityManager $envSecurity)
     {

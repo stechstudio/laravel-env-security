@@ -14,12 +14,12 @@ class KmsDriver implements Encrypter
     /**
      * @var KmsClient
      */
-    protected $client;
+    protected KmsClient $client;
 
     /**
-     * @var
+     * @var string
      */
-    protected $keyId;
+    protected string $keyId;
 
     /**
      * KmsDriver constructor.
@@ -34,15 +34,15 @@ class KmsDriver implements Encrypter
     }
 
     /**
-     * @param string $value
-     * @param bool   $serialize
+     * @param  string  $value
+     * @param  bool  $serialize
      *
      * @return mixed|string
      */
     public function encrypt($value, $serialize = true): mixed
     {
         $result = $this->client->encrypt([
-            'KeyId'     => $this->keyId,
+            'KeyId' => $this->keyId,
             'Plaintext' => $value
         ])->get('CiphertextBlob');
 
@@ -52,8 +52,8 @@ class KmsDriver implements Encrypter
     }
 
     /**
-     * @param string $payload
-     * @param bool   $unserialize
+     * @param  string  $payload
+     * @param  bool  $unserialize
      *
      * @return string
      */
@@ -64,7 +64,7 @@ class KmsDriver implements Encrypter
         }
 
         return $this->client->decrypt([
-            'KeyId'          => $this->keyId,
+            'KeyId' => $this->keyId,
             'CiphertextBlob' => $payload
         ])->get('Plaintext');
     }
