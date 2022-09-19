@@ -30,8 +30,13 @@ class GoogleKmsDriver implements Encrypter
      * @param  string  $keyRing
      * @param  string  $key
      */
-    public function __construct(KeyManagementServiceClient $client, $project, $location, $keyRing, $key)
-    {
+    public function __construct(
+        KeyManagementServiceClient $client,
+        string $project,
+        string $location,
+        string $keyRing,
+        string $key
+    ) {
         $this->client = $client;
         $this->keyName = $client::cryptoKeyName($project, $location, $keyRing, $key);
     }

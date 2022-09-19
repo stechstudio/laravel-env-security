@@ -35,7 +35,7 @@ class EnvSecurityManager extends Manager
     /**
      * @param  callable  $callback
      */
-    public function resolveEnvironmentUsing($callback)
+    public function resolveEnvironmentUsing(callable $callback): void
     {
         $this->environmentResolver = $callback;
     }
@@ -71,7 +71,7 @@ class EnvSecurityManager extends Manager
     /**
      * @param $callback
      */
-    public function resolveKeyUsing($callback)
+    public function resolveKeyUsing($callback): void
     {
         $this->keyResolver = $callback;
     }
@@ -137,7 +137,7 @@ class EnvSecurityManager extends Manager
      * @param  bool  $serialize
      * @return string
      */
-    public function encrypt($value, $serialize = true): string
+    public function encrypt(string $value, bool $serialize = true): string
     {
         // Compress Value
         if (config('env-security.enable_compression')) {
@@ -159,7 +159,7 @@ class EnvSecurityManager extends Manager
      * @param  bool  $unserialize
      * @return string
      */
-    public function decrypt($value, $unserialize = true): string
+    public function decrypt(string $value, bool $unserialize = true): string
     {
         $value = $this->driver()->decrypt($value, $unserialize);
 
@@ -198,7 +198,7 @@ class EnvSecurityManager extends Manager
         return $result;
     }
 
-    private function checkZlibExtension($message)
+    private function checkZlibExtension($message): void
     {
         if (!in_array('zlib', get_loaded_extensions())) {
             throw new RuntimeException($message);
