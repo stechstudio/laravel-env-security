@@ -16,7 +16,9 @@ Our package is different in the following ways:
 2) We need to manage .env files for multiple environments (like qa, uat, production). This package allows you to manage any number of environment-specific .env files.
 3) We wanted to leverage services like AWS Key Management Service to handle encryption/decryption, with the option to add other encryption drivers (like ansible) or secrets management services (like AWS Secrets Manager) in the future.
 
-## Installation and setup
+## Installation and Setup
+### Prerequisites
+If you intend to enable compression you must have the [Zlib Compression Extension](https://www.php.net/manual/en/book.zlib.php) installed and enabled.
 
 ### Install the package
 
@@ -50,8 +52,22 @@ If you are using a version of Laravel earlier than 5.5, you will need to manuall
     STS\EnvSecurity\EnvSecurityServiceProvider::class,
 ]
 ```
+### Configuration Settings
+| Configuration Key                          | Environment Variable                             | Default        | Description                                                 |
+|--------------------------------------------|--------------------------------------------------|----------------|-------------------------------------------------------------|
+| `env-security.default`                     | **ENV_DRIVER**                                   | `kms`          | The default driver.                                         |
+| `env-security.editor`                      | **EDITOR**                                       | `vi`           | Preferred text editor.                                      |
+| `env-security.store`                       | **ENV_STORAGE_PATH**                             | `env`          | The directory where should we keep the encrypted .env files |
+| `env-security.destination`                 | **ENV_DESTINATION_FILE**                         | `.env`         | This is where we will put the decrypted .env file           |
+| `env-security.enable_compression`          | **ENV_COMPRESSION**                              | `false`        | Should data be compressed prior to encrypting it?           |
+| `env-security.divers.kms.key_id`           | **AWS_KMS_KEY**                                  | `null`         | An AWS Key ID or Alias                                      |
+| `env-security.drivers.kms.region`          | **AWS_KMS_REGION**                               | `null`         | An AWS Region the key is in.                                |
+| `env-security.drivers.google_kms.project`  | **GOOGLE_KMS_PROJECT**, **GOOGLE_CLOUD_PROJECT** | `null`, `null` | A Google CLoud Project Identifier                           |
+| `env-security.drivers.google_kms.location` | **GOOGLE_KMS_LOCATION**                          | `global`       | A Google Cloud KMS Location                                 |
+| `env-security.drivers.google_kms.key_ring` | **GOOGLE_KMS_KEY_RING**                          | `null`         | A Google Cloud KMS Key Ring                                 |
+| `env-security.drivers.google_kms.key_id`   | **GOOGLE_KMS_KEY**                               | `null`         | A Google CLoud KMS Key                                      |
 
-## Environment resolution
+## Environment resolutionss
 In order for this package to decrypt the correct .env file when you deploy, you need to tell it how to figure out the environment.
 
 By default it will look for a `APP_ENV` environment variable. However you can provide your own custom resolver with a callback function. Put this in your `AppServiceProvider`'s `boot` method:

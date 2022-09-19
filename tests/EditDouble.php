@@ -9,7 +9,7 @@ use STS\EnvSecurity\Console\Edit;
  */
 class EditDouble extends Edit
 {
-    protected $signature = 'env:edit {environment : Which environment file you wish to decrypt} {--append=}';
+    protected $signature = 'env:edit {environment : Which environment file you wish to decrypt} {--c|compress : Override configuration and require compression.} {--append=} ';
 
     protected function environment()
     {
@@ -18,10 +18,10 @@ class EditDouble extends Edit
 
     protected function edit($contents)
     {
-        $this->info('Plaintext contents: ' . $contents);
+        $this->info('Plaintext contents: '.$contents);
 
-        if($this->option('append')) {
-            $contents = trim($contents . " " . $this->option('append'));
+        if ($this->option('append')) {
+            $contents = trim($contents." ".$this->option('append'));
         }
 
         return $contents;

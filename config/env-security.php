@@ -11,7 +11,7 @@ return [
     /**
      * This is the default driver we'll use to manage encryption/decryption
      */
-    'default' => env('ENV_DRIVER','kms'),
+    'default' => env('ENV_DRIVER', 'kms'),
 
     /**
      * Specify the preferred text editor on your system
@@ -27,6 +27,11 @@ return [
      * This is where we will put the decrypted .env file
      */
     'destination' => base_path(env('ENV_DESTINATION_FILE', '.env')),
+
+    /**
+     * Should data be compressed prior to encrypting it?
+     */
+    'enable_compression' => env('ENV_COMPRESSION', false),
 
     'drivers' => [
         'kms' => [
