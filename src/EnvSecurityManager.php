@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 use RuntimeException;
 use STS\EnvSecurity\Drivers\GoogleKmsDriver;
 use STS\EnvSecurity\Drivers\KmsDriver;
+use function restore_error_handler;
+use function set_error_handler;
 
 /**
  *
@@ -182,7 +184,7 @@ class EnvSecurityManager extends Manager
     {
         $this->checkZlibExtension('The environment file was compressed and can not be decompressed because the zlib extension is not installed.');
         try {
-            \set_error_handler(
+            set_error_handler(
                 static function ($errno, $errstr, $errfile, $errline) {
                     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
                 },
@@ -196,7 +198,7 @@ class EnvSecurityManager extends Manager
                 $previous
             );
         } finally {
-            \restore_error_handler();
+            restore_error_handler();
         }
 
         return $result;

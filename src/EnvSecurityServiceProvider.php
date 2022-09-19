@@ -15,6 +15,7 @@ use RuntimeException;
 use STS\EnvSecurity\Console\Decrypt;
 use STS\EnvSecurity\Console\Edit;
 use STS\EnvSecurity\Console\Encrypt;
+use Throwable;
 use function config;
 use function sprintf;
 
@@ -62,7 +63,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
                     sprintf('Error creating the cipertext directory - %s', config('env-security.store'))
                 );
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new RuntimeException(
                 sprintf('Error creating the cipertext directory - %s', config('env-security.store')),
                 $e->getCode(),
