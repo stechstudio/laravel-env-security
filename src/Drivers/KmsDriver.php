@@ -30,7 +30,7 @@ class KmsDriver implements Encrypter
     public function __construct($kmsClient, $keyId)
     {
         $this->client = $kmsClient;
-        $this->keyId = $keyId;
+        $this->keyId = $keyId ?? '';
     }
 
     /**
