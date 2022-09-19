@@ -122,7 +122,7 @@ class Edit extends Command
     /**
      * @param $plaintext
      */
-    protected function saveEnvContents($plaintext)
+    protected function saveEnvContents($plaintext): void
     {
         $ciphertext = !empty($plaintext)
             ? $this->envSecurity->encrypt($plaintext)
