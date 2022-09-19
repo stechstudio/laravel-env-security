@@ -53,7 +53,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
     }
 
     /**
-     * Make sure our directory is setup and ready
+     * Make sure our directory is set up and ready
      */
     protected function verifyDirectory(): void
     {
