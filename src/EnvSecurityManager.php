@@ -144,6 +144,7 @@ class EnvSecurityManager extends Manager
         // Compress Value
         if (config('env-security.enable_compression')) {
             $this->checkZlibExtension('Laravel Env Security compression is enabled, but the zlib extension is not installed.');
+            /** @noinspection PhpComposerExtensionStubsInspection */
             if (($compressed = gzencode($value, 9)) === false) {
                 throw new RuntimeException('Failed to compress the content.');
             }
@@ -186,6 +187,7 @@ class EnvSecurityManager extends Manager
                     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
                 },
                 E_WARNING);
+            /** @noinspection PhpComposerExtensionStubsInspection */
             $result = gzdecode(Str::substr($value, strlen('gzencoded::')));
         } catch (ErrorException $previous) {
             throw new RuntimeException(
