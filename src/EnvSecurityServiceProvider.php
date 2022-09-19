@@ -34,7 +34,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
      */
     protected string $configPath = __DIR__.'/../config/env-security.php';
 
-    public function boot()
+    public function boot(): void
     {
         // helps deal with Lumen vs Laravel differences
         if (function_exists('config_path')) {
@@ -54,7 +54,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
     /**
      * Make sure our directory is setup and ready
      */
-    protected function verifyDirectory()
+    protected function verifyDirectory(): void
     {
         try {
             if (!is_dir(config('env-security.store')) && !mkdir($concurrentDirectory = config('env-security.store')) && !is_dir($concurrentDirectory)) {
@@ -89,7 +89,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
         return ['sts.env-security', EnvSecurityManager::class];
     }
 
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(EnvSecurityManager::class, function () {
             return new EnvSecurityManager($this->app);
