@@ -48,13 +48,9 @@ class EnvSecurityManager extends Manager
      */
     public function resolveEnvironment(): ?string
     {
-        if ($this->environment) {
-            return $this->environment;
-        }
-
-        return isset($this->environmentResolver)
-            ? call_user_func($this->environmentResolver)
-            : config('app.env');
+        return $this->environment ?? isset($this->environmentResolver)
+                ? call_user_func($this->environmentResolver)
+                : config('app.env');
     }
 
     /**
