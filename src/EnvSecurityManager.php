@@ -151,7 +151,7 @@ class EnvSecurityManager extends Manager
                 throw new RuntimeException('Failed to compress the content.');
             }
 
-            $value = "gzencoded::${compressed}";
+            $value = "gzencoded::$compressed";
         }
         // Encode Value
         return $this->driver()->encrypt($value, $serialize);
