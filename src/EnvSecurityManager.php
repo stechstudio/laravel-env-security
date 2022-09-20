@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of laravel-env-security.
+ *
+ *  (c) Signature Tech Studio, Inc <info@stechstudio.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
+ */
 
 namespace STS\EnvSecurity;
 
@@ -115,7 +123,7 @@ class EnvSecurityManager extends Manager
         $config = config('env-security.drivers.google_kms');
 
         $config['key_id'] = $this->resolveKey() ?? $config['key_id'];
-        
+
         $options = Arr::get($config, 'options', []);
 
         return new GoogleKmsDriver(
