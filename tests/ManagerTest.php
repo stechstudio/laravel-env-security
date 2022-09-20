@@ -2,10 +2,10 @@
 
 namespace Tests;
 
-use Config;
-use EnvSecurity;
+use Illuminate\Support\Facades\Config;
 use STS\EnvSecurity\Drivers\GoogleKmsDriver;
 use STS\EnvSecurity\Drivers\KmsDriver;
+use STS\EnvSecurity\EnvSecurityFacade as EnvSecurity;
 
 class ManagerTest extends TestCase
 {
@@ -23,7 +23,7 @@ class ManagerTest extends TestCase
         ]);
 
         // We have to at least pretend to have valid Google credentials
-        file_put_contents(__DIR__ . '/store/keyfile.json', json_encode([
+        file_put_contents(__DIR__.'/store/keyfile.json', json_encode([
             'type' => 'service_account',
             'project_id' => '',
             'private_key_id' => '',
@@ -35,7 +35,7 @@ class ManagerTest extends TestCase
             'auth_provider_x509_cert_url' => '',
             'client_x509_cert_url' => ''
         ]));
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=' . __DIR__ . '/store/keyfile.json');
+        putenv('GOOGLE_APPLICATION_CREDENTIALS='.__DIR__.'/store/keyfile.json');
 
         $this->assertInstanceOf(GoogleKmsDriver::class, EnvSecurity::driver());
 
@@ -51,7 +51,8 @@ class ManagerTest extends TestCase
         // By default it will use our APP_ENV
         $this->assertEquals('testing', EnvSecurity::resolveEnvironment());
 
-        EnvSecurity::resolveEnvironmentUsing(function() {
+        EnvSecurity::setEnvironment(null);
+        EnvSecurity::resolveEnvironmentUsing(function () {
             return "heya";
         });
 
@@ -67,7 +68,7 @@ class ManagerTest extends TestCase
         // By default it will be null
         $this->assertNull(EnvSecurity::resolveKey());
 
-        EnvSecurity::resolveKeyUsing(function($environment) {
+        EnvSecurity::resolveKeyUsing(function ($environment) {
             return "alias/myapp-$environment";
         });
 
