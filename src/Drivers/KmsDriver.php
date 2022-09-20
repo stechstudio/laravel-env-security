@@ -17,17 +17,17 @@ use Illuminate\Contracts\Encryption\Encrypter;
  * Class KmsDriver
  * @package STS\EnvSecurity\Drivers
  */
-class KmsDriver implements Encrypter
+final class KmsDriver implements Encrypter
 {
     /**
      * @var KmsClient
      */
-    protected KmsClient $client;
+    private KmsClient $client;
 
     /**
      * @var string
      */
-    protected string $keyId;
+    private string $keyId;
 
     /**
      * KmsDriver constructor.

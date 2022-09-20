@@ -18,17 +18,17 @@ use Illuminate\Contracts\Encryption\Encrypter;
  * Class GoogleKmsDriver
  * @package STS\EnvSecurity\Drivers
  */
-class GoogleKmsDriver implements Encrypter
+final class GoogleKmsDriver implements Encrypter
 {
     /**
      * @var KeyManagementServiceClient
      */
-    protected KeyManagementServiceClient $client;
+    private KeyManagementServiceClient $client;
 
     /**
      * @var string
      */
-    protected string $keyName;
+    private string $keyName;
 
     /**
      * KmsDriver constructor.
