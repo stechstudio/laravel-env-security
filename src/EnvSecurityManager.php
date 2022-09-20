@@ -31,9 +31,9 @@ class EnvSecurityManager extends Manager
     protected $keyResolver;
 
     /**
-     * @var string
+     * @var ?string
      */
-    public string $environment;
+    public ?string $environment;
 
     /**
      * @param  callable  $callback
@@ -48,9 +48,9 @@ class EnvSecurityManager extends Manager
      */
     public function resolveEnvironment(): ?string
     {
-        return $this->environment ?? isset($this->environmentResolver)
-                ? call_user_func($this->environmentResolver)
-                : config('app.env');
+        return $this->environment ??= isset($this->environmentResolver)
+            ? call_user_func($this->environmentResolver)
+            : config('app.env');
     }
 
     /**
@@ -60,7 +60,7 @@ class EnvSecurityManager extends Manager
      *
      * @return $this
      */
-    public function setEnvironment($environment): static
+    public function setEnvironment(?string $environment): static
     {
         $this->environment = $environment;
 
