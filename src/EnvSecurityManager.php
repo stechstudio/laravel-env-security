@@ -56,7 +56,7 @@ class EnvSecurityManager extends Manager
     /**
      * Setting an environment name explicitly will override any resolver and default
      *
-     * @param $environment
+     * @param ?string  $environment
      *
      * @return $this
      */
@@ -68,9 +68,9 @@ class EnvSecurityManager extends Manager
     }
 
     /**
-     * @param $callback
+     * @param  callable  $callback
      */
-    public function resolveKeyUsing($callback): void
+    public function resolveKeyUsing(callable $callback): void
     {
         $this->keyResolver = $callback;
     }
@@ -172,11 +172,11 @@ class EnvSecurityManager extends Manager
     }
 
     /**
-     * @param $value
+     * @param  string  $value
      * @return string
      * @throws RuntimeException
      */
-    private function decompress($value): string
+    private function decompress(string $value): string
     {
         $this->checkZlibExtension('The environment file was compressed and can not be decompressed because the zlib extension is not installed.');
         try {
