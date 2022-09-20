@@ -53,13 +53,13 @@ class KmsDriver implements Encrypter
 
     /**
      * @param  string  $payload
-     * @param  bool  $deserialize
+     * @param  bool  $unserialize
      *
      * @return string
      */
-    public function decrypt($payload, $deserialize = true): string
+    public function decrypt($payload, $unserialize = true): string
     {
-        if ($deserialize) {
+        if ($unserialize) {
             $payload = base64_decode($payload);
         }
 
