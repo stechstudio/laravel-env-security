@@ -101,9 +101,7 @@ class EnvSecurityManager extends Manager
     {
         $config = config('env-security.drivers.kms');
 
-        $key = $this->keyResolver
-            ? $this->resolveKey()
-            : $config['key_id'];
+        $key = $this->resolveKey() ?? $config['key_id'];
 
         return new KmsDriver(new KmsClient($config), $key);
     }
@@ -116,10 +114,8 @@ class EnvSecurityManager extends Manager
     {
         $config = config('env-security.drivers.google_kms');
 
-        if ($this->keyResolver) {
-            $config['key_id'] = $this->resolveKey();
-        }
-
+        $config['key_id'] = $this->resolveKey() ?? $config['key_id'];
+        
         $options = Arr::get($config, 'options', []);
 
         return new GoogleKmsDriver(
