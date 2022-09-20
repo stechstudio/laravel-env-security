@@ -3,6 +3,7 @@
 namespace STS\EnvSecurity;
 
 use Aws\Kms\KmsClient;
+use Closure;
 use ErrorException;
 use Google\ApiCore\ValidationException;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
@@ -21,14 +22,14 @@ use function set_error_handler;
 class EnvSecurityManager extends Manager
 {
     /**
-     * @var callable
+     * @var Closure
      */
-    protected $environmentResolver;
+    protected Closure $environmentResolver;
 
     /**
-     * @var callable
+     * @var Closure
      */
-    protected $keyResolver;
+    protected Closure $keyResolver;
 
     /**
      * @var ?string
@@ -40,7 +41,7 @@ class EnvSecurityManager extends Manager
      */
     public function resolveEnvironmentUsing(callable $callback): void
     {
-        $this->environmentResolver = $callback;
+        $this->environmentResolver = Closure::fromCallable($callback);
     }
 
     /**
@@ -72,7 +73,7 @@ class EnvSecurityManager extends Manager
      */
     public function resolveKeyUsing(callable $callback): void
     {
-        $this->keyResolver = $callback;
+        $this->keyResolver = Closure::fromCallable($callback);
     }
 
     /**
