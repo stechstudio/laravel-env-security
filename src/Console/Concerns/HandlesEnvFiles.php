@@ -9,11 +9,11 @@ namespace STS\EnvSecurity\Console\Concerns;
 trait HandlesEnvFiles
 {
     /**
-     * @param $environment
+     * @param  string  $environment
      *
-     * @return bool|null|string
+     * @return null|string
      */
-    protected function loadEncrypted($environment): bool|string|null
+    protected function loadEncrypted(string $environment): ?string
     {
         $path = $this->getFilePathForEnvironment($environment);
 
@@ -25,12 +25,12 @@ trait HandlesEnvFiles
     }
 
     /**
-     * @param $ciphertext
-     * @param $environment
+     * @param  mixed  $ciphertext
+     * @param  string  $environment
      *
      * @return bool
      */
-    protected function saveEncrypted($ciphertext, $environment): bool
+    protected function saveEncrypted(mixed $ciphertext, string $environment): bool
     {
         $path = $this->getFilePathForEnvironment($environment);
 
@@ -38,26 +38,24 @@ trait HandlesEnvFiles
     }
 
     /**
-     * @param      $plaintext
-     * @param  null  $output
+     * @param  string  $plaintext
+     * @param  null|string  $output
      *
      * @return bool
      */
-    protected function saveDecrypted($plaintext, $output = null): bool
+    protected function saveDecrypted(string $plaintext, ?string $output = null): bool
     {
-        if (!$output) {
-            $output = config('env-security.destination');
-        }
+        $output ??= config('env-security.destination');
 
         return file_put_contents($output, $plaintext) !== false;
     }
 
     /**
-     * @param $environment
+     * @param  string  $environment
      *
      * @return string
      */
-    protected function getFilePathForEnvironment($environment): string
+    protected function getFilePathForEnvironment(string $environment): string
     {
         return config('env-security.store').'/'.$environment.'.env.enc';
     }
