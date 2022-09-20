@@ -11,16 +11,23 @@
 namespace STS\EnvSecurity;
 
 use Illuminate\Support\Facades\Facade;
+use STS\EnvSecurity\Drivers\GoogleKmsDriver;
+use STS\EnvSecurity\Drivers\KmsDriver;
 
 /**
  * Class Profile.
  *
  *
- * @method static EnvSecurityManager factory(string $keyId, array $config = [])
- * @method static EnvSecurityManager encrypt($plaintext, $serialize = true)
- * @method static EnvSecurityManager decrypt($plaintext, $serialize = true)
- * @method static EnvSecurityManager resolveEnvironmentUsing($callback)
- * @method static EnvSecurityManager resolveEnvironment()
+ * @method static void resolveEnvironmentUsing(callable $callback)
+ * @method static string|null resolveEnvironment()
+ * @method static EnvSecurityManager setEnvironment(?string $environment)
+ * @method static void resolveKeyUsing(callable $callback)
+ * @method static string|null resolveKey()
+ * @method static string getDefaultDriver()
+ * @method static KmsDriver createKmsDriver()
+ * @method static GoogleKmsDriver createGoogleKmsDriver()
+ * @method static string encrypt(string $value, bool $serialize = true)
+ * @method static string decrypt(string $value, bool $deserialize = true)
  */
 class EnvSecurityFacade extends Facade
 {
