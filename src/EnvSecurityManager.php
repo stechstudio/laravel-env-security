@@ -27,17 +27,17 @@ use STS\EnvSecurity\Pipeline\Pipes\Encrypt;
 use STS\EnvSecurity\Pipeline\Pipes\ReadFile;
 use STS\EnvSecurity\Pipeline\Pipes\WriteFile;
 
-class EnvSecurityManager extends Manager
+final class EnvSecurityManager extends Manager
 {
     /**
      * @var Closure
      */
-    protected Closure $environmentResolver;
+    private Closure $environmentResolver;
 
     /**
      * @var Closure
      */
-    protected Closure $keyResolver;
+    private Closure $keyResolver;
 
     /**
      * @var ?string
