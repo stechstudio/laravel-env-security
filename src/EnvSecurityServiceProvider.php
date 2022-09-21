@@ -16,24 +16,25 @@ use STS\EnvSecurity\Console\Decrypt;
 use STS\EnvSecurity\Console\Edit;
 use STS\EnvSecurity\Console\Encrypt;
 use Throwable;
+
 use function config;
 use function sprintf;
 
-class EnvSecurityServiceProvider extends ServiceProvider
+final class EnvSecurityServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
      *
      * @var bool
      */
-    protected bool $defer = false;
+    private bool $defer = false;
 
     /**
      * Default path to configuration.
      *
      * @var string
      */
-    protected string $configPath = __DIR__.'/../config/env-security.php';
+    private string $configPath = __DIR__.'/../config/env-security.php';
 
     public function boot(): void
     {
