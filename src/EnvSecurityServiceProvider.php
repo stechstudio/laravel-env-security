@@ -56,7 +56,7 @@ final class EnvSecurityServiceProvider extends ServiceProvider
     /**
      * Make sure our directory is set up and ready.
      */
-    protected function verifyDirectory(): void
+    private function verifyDirectory(): void
     {
         try {
             if (!is_dir(config('env-security.store')) && !mkdir($concurrentDirectory = config('env-security.store')) && !is_dir($concurrentDirectory)) {
@@ -76,7 +76,7 @@ final class EnvSecurityServiceProvider extends ServiceProvider
     /**
      * Register our console commands.
      */
-    protected function getConsoleCommands(): array
+    private function getConsoleCommands(): array
     {
         return [Decrypt::class, Edit::class, Encrypt::class];
     }
