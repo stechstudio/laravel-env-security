@@ -74,7 +74,7 @@ class Decrypt extends Command
      */
     protected function environment(): array|string
     {
-        return \is_null($this->argument('environment'))
+        return $this->argument('environment') === null
             ? $this->envSecurity->resolveEnvironment()
             : $this->argument('environment');
     }
