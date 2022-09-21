@@ -22,23 +22,6 @@ use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
 class Edit extends Command
 {
     use HandlesEnvFiles;
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'env:edit 
-                            {environment : Which environment file you wish to edit}
-                            {--C|compress : Override configuration and require compression.}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Edit an encrypted env file';
-
     /**
      * @var EnvSecurityManager
      */
@@ -46,6 +29,10 @@ class Edit extends Command
 
     public function __construct(EnvSecurityManager $envSecurity)
     {
+        $this->signature = 'env:edit 
+                            {environment : Which environment file you wish to edit}
+                            {--C|compress : Override configuration and require compression.}';
+        $this->description = 'Edit an encrypted env file';
         $this->envSecurity = $envSecurity;
 
         parent::__construct();

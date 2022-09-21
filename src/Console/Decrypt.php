@@ -22,28 +22,17 @@ class Decrypt extends Command
     use HandlesEnvFiles;
 
     /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'env:decrypt
-                            {environment? : Which environment file you wish to decrypt}
-                            {--o|out= : Saves the decrypted file to an alternate location}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Decrypt a .env file. Tries to deduce the environment if none provided.';
-
-    /**
      * @var EnvSecurityManager
      */
     protected EnvSecurityManager $envSecurity;
 
     public function __construct(EnvSecurityManager $envSecurity)
     {
+        $this->signature = 'env:decrypt
+                            {environment? : Which environment file you wish to decrypt}
+                            {--o|out= : Saves the decrypted file to an alternate location}';
+
+        $this->description = 'Decrypt a .env file. Tries to deduce the environment if none provided.';
         $this->envSecurity = $envSecurity;
 
         parent::__construct();
