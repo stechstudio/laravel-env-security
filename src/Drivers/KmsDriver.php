@@ -46,8 +46,10 @@ final class KmsDriver implements Encrypter
      *
      * @return mixed|string
      */
-    public function encrypt($value, $serialize = true): mixed
+    public function encrypt($value, $serialize = null): mixed
     {
+        $serialize ??= true;
+
         $result = $this->client->encrypt([
             'KeyId' => $this->keyId,
             'Plaintext' => $value,
@@ -64,8 +66,10 @@ final class KmsDriver implements Encrypter
      *
      * @return string
      */
-    public function decrypt($payload, $unserialize = true): string
+    public function decrypt($payload, $unserialize = null): string
     {
+        $unserialize ??= true;
+
         if ($unserialize) {
             $payload = base64_decode($payload);
         }
