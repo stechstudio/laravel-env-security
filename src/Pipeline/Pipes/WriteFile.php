@@ -6,7 +6,7 @@ use Closure;
 use RuntimeException;
 use STS\EnvSecurity\Pipeline\Payload;
 
-class WriteFile implements \STS\EnvSecurity\Pipeline\Contracts\Pipe
+final class WriteFile implements \STS\EnvSecurity\Pipeline\Contracts\Pipe
 {
     public function handle(Payload $payload, Closure $next): Payload
     {

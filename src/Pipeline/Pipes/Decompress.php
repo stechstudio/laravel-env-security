@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use RuntimeException;
 use STS\EnvSecurity\Pipeline\Payload;
 
-class Decompress implements \STS\EnvSecurity\Pipeline\Contracts\Pipe
+final class Decompress implements \STS\EnvSecurity\Pipeline\Contracts\Pipe
 {
     public function handle(Payload $payload, Closure $next): Payload
     {
@@ -46,10 +46,10 @@ class Decompress implements \STS\EnvSecurity\Pipeline\Contracts\Pipe
     private function setErrorHandler(): void
     {
         set_error_handler(
-        /**
-         * @throws ErrorException
-         */
-            static fn($errno, $errstr, $errfile, $errline) => throw new \ErrorException(
+            /**
+             * @throws ErrorException
+             */
+            static fn ($errno, $errstr, $errfile, $errline) => throw new \ErrorException(
                 $errstr,
                 0,
                 $errno,
