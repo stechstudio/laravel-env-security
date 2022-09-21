@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
 use STS\EnvSecurity\EnvSecurityFacade;
+use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
 
 class CompressionTest extends TestCase
 {
@@ -37,8 +37,9 @@ class CompressionTest extends TestCase
         // Verify the decrypted uncompressed file is equal to the expected plain text.
         $this->assertEquals($plaintext, EnvSecurityFacade::decrypt($this->loadEncrypted($environment_1)));
         // Verify that the decrypted compressed file is equal to the decrypted uncompressed filesss
-        $this->assertEquals(EnvSecurityFacade::decrypt($this->loadEncrypted($environment_1)),
-            EnvSecurityFacade::decrypt($this->loadEncrypted($environment_2)));
+        $this->assertEquals(
+            EnvSecurityFacade::decrypt($this->loadEncrypted($environment_1)),
+            EnvSecurityFacade::decrypt($this->loadEncrypted($environment_2))
+        );
     }
-
 }

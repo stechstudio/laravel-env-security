@@ -8,27 +8,27 @@
  * file that was distributed with this source code.
  */
 return [
-    /**
+    /*
      * This is the default driver we'll use to manage encryption/decryption
      */
     'default' => env('ENV_DRIVER', 'kms'),
 
-    /**
+    /*
      * Specify the preferred text editor on your system
      */
     'editor' => env('EDITOR', 'vi'),
 
-    /**
+    /*
      * The directory where should we keep the encrypted .env files
      */
     'store' => base_path(env('ENV_STORAGE_PATH', 'env')),
 
-    /**
+    /*
      * This is where we will put the decrypted .env file
      */
     'destination' => base_path(env('ENV_DESTINATION_FILE', '.env')),
 
-    /**
+    /*
      * Should data be compressed prior to encrypting it?
      */
     'enable_compression' => env('ENV_COMPRESSION', false),
@@ -46,5 +46,5 @@ return [
             'key_ring' => env('GOOGLE_KMS_KEY_RING'),
             'key_id' => env('GOOGLE_KMS_KEY'),
         ],
-    ]
+    ],
 ];

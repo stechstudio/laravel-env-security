@@ -12,21 +12,21 @@ namespace STS\EnvSecurity;
 
 use Aws\Kms\KmsClient;
 use Closure;
-use ErrorException;
 use Google\ApiCore\ValidationException;
 use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Manager;
-use Illuminate\Support\Str;
-use RuntimeException;
 use STS\EnvSecurity\Drivers\GoogleKmsDriver;
 use STS\EnvSecurity\Drivers\KmsDriver;
-use function restore_error_handler;
-use function set_error_handler;
+use STS\EnvSecurity\Pipeline\Payload;
+use STS\EnvSecurity\Pipeline\Pipeline;
+use STS\EnvSecurity\Pipeline\Pipes\Compress;
+use STS\EnvSecurity\Pipeline\Pipes\Decompress;
+use STS\EnvSecurity\Pipeline\Pipes\Decrypt;
+use STS\EnvSecurity\Pipeline\Pipes\Encrypt;
+use STS\EnvSecurity\Pipeline\Pipes\ReadFile;
+use STS\EnvSecurity\Pipeline\Pipes\WriteFile;
 
-/**
- *
- */
 class EnvSecurityManager extends Manager
 {
     /**
@@ -58,12 +58,12 @@ class EnvSecurityManager extends Manager
     public function resolveEnvironment(): ?string
     {
         return $this->environment ??= isset($this->environmentResolver)
-            ? call_user_func($this->environmentResolver)
+            ? \call_user_func($this->environmentResolver)
             : config('app.env');
     }
 
     /**
-     * Setting an environment name explicitly will override any resolver and default
+     * Setting an environment name explicitly will override any resolver.
      *
      * @param ?string  $environment
      *
@@ -90,7 +90,7 @@ class EnvSecurityManager extends Manager
     public function resolveKey(): ?string
     {
         return isset($this->keyResolver)
-            ? call_user_func($this->keyResolver, $this->resolveEnvironment())
+            ? \call_user_func($this->keyResolver, $this->resolveEnvironment())
             : null;
     }
 
@@ -137,79 +137,55 @@ class EnvSecurityManager extends Manager
 
     /**
      * Encrypt the value.
-     *
-     * @param  string  $value
-     * @param  bool  $serialize
-     * @return string
      */
-    public function encrypt(string $value, bool $serialize = true): string
+    public function encrypt(?string $environment = null): void
     {
-        // Compress Value
-        if (config('env-security.enable_compression')) {
-            $this->checkZlibExtension('Laravel Env Security compression is enabled, but the zlib extension is not installed.');
-            /** @noinspection PhpComposerExtensionStubsInspection */
-            if (($compressed = gzencode($value, 9)) === false) {
-                throw new RuntimeException('Failed to compress the content.');
-            }
+        $environment ??= $this->resolveEnvironment();
 
-            $value = "gzencoded::$compressed";
-        }
-        // Encode Value
-        return $this->driver()->encrypt($value, $serialize);
+        (new Pipeline($this))->send(
+            new Payload(
+                environment: $environment,
+                manager: $this,
+                operation: Payload::ENCRYPT
+            )
+        )->through(
+            [
+                // Load current .env file.
+                ReadFile::class,
+                // Compress? current .env file.
+                Compress::class,
+                // Encrypt Compressed? .env file
+                Encrypt::class,
+                // Save Compressed .env file
+                WriteFile::class,
+            ]
+        );
     }
 
     /**
      * Decrypt the value.
-     *
-     * @param  string  $value
-     * @param  bool  $deserialize
-     * @return string
      */
-    public function decrypt(string $value, bool $deserialize = true): string
+    public function decrypt(?string $environment = null): void
     {
-        $value = $this->driver()->decrypt($value, $deserialize);
+        $environment ??= $this->resolveEnvironment();
 
-        if (Str::substr($value, 0, strlen('gzencoded::')) === 'gzencoded::') {
-            $value = $this->decompress($value);
-        }
-
-        return $value;
+        (new Pipeline($this))->send(
+            new Payload(
+                environment: $environment,
+                manager: $this,
+                operation: Payload::ENCRYPT
+            )
+        )->through(
+            [
+                // Load encrypted file
+                ReadFile::class,
+                // Decrypted encrypted file
+                Decrypt::class,
+                // decompress
+                Decompress::class,
+                // save as current unencrypted file
+                WriteFile::class,
+            ]
+        );
     }
-
-    /**
-     * @param  string  $value
-     * @return string
-     * @throws RuntimeException
-     */
-    private function decompress(string $value): string
-    {
-        $this->checkZlibExtension('The environment file was compressed and can not be decompressed because the zlib extension is not installed.');
-        try {
-            set_error_handler(
-                static function ($errno, $errstr, $errfile, $errline) {
-                    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-                },
-                E_WARNING);
-            /** @noinspection PhpComposerExtensionStubsInspection */
-            $result = gzdecode(Str::substr($value, strlen('gzencoded::')));
-        } catch (ErrorException $previous) {
-            throw new RuntimeException(
-                'The unencrypted data is corrupt and can not be uncompressed.',
-                0,
-                $previous
-            );
-        } finally {
-            restore_error_handler();
-        }
-
-        return $result;
-    }
-
-    private function checkZlibExtension($message): void
-    {
-        if (!in_array('zlib', get_loaded_extensions())) {
-            throw new RuntimeException($message);
-        }
-    }
-
 }

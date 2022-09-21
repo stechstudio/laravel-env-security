@@ -11,7 +11,7 @@ class EditTest extends TestCase
     use HandlesEnvFiles;
 
     /**
-     * Need a specific SP to load a specific artisan command test double
+     * Need a specific SP to load a specific artisan command test double.
      */
     protected function getPackageProviders($app)
     {
@@ -21,15 +21,16 @@ class EditTest extends TestCase
     public function testEditEmptyFile()
     {
         // Make sure no file is present
-        if(file_exists($this->getFilePathForEnvironment('testing'))) {
+        if (file_exists($this->getFilePathForEnvironment('testing'))) {
             unlink($this->getFilePathForEnvironment('testing'));
         }
 
         // Setup a driver that fails if we call the encrypt method.
-        EnvSecurity::extend('failonencrypt', function() {
+        EnvSecurity::extend('failonencrypt', function () {
             return new class {
-                public function encrypt($plaintext) {
-                    throw new \Exception('Should not be here. I received: ' . $plaintext);
+                public function encrypt($plaintext)
+                {
+                    throw new \Exception('Should not be here. I received: '.$plaintext);
                 }
             };
         });
@@ -46,7 +47,7 @@ class EditTest extends TestCase
     public function testEditEncryptedFile()
     {
         // Setup a testing.env.enc file
-        $this->saveEncrypted(EnvSecurity::encrypt('hello world'), "testing");
+        $this->saveEncrypted(EnvSecurity::encrypt('hello world'), 'testing');
 
         // Our test double will output the plaintext
         $this->artisan('env:edit testing --append modified')

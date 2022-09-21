@@ -11,7 +11,7 @@ class DecryptTest extends TestCase
     use HandlesEnvFiles;
 
     /**
-     * Need a specific SP to load a specific artisan command test double
+     * Need a specific SP to load a specific artisan command test double.
      */
     protected function getPackageProviders($app)
     {
@@ -25,14 +25,14 @@ class DecryptTest extends TestCase
         $this->artisan('env:decrypt testing')
             ->expectsOutput('Successfully decrypted .env for environment [testing]');
 
-        $this->assertTrue(file_exists(__DIR__ . "/.env-saved"));
-        $this->assertEquals('hello world', file_get_contents(__DIR__ . "/.env-saved"));
+        $this->assertTrue(file_exists(__DIR__.'/.env-saved'));
+        $this->assertEquals('hello world', file_get_contents(__DIR__.'/.env-saved'));
     }
 
     public function testDecryptMissingFile()
     {
         // Make sure no file is present
-        if(file_exists($this->getFilePathForEnvironment('testing'))) {
+        if (file_exists($this->getFilePathForEnvironment('testing'))) {
             unlink($this->getFilePathForEnvironment('testing'));
         }
 
@@ -43,7 +43,7 @@ class DecryptTest extends TestCase
 
     public function testDecryptResolveEnvironment()
     {
-        EnvSecurity::resolveEnvironmentUsing(function() {
+        EnvSecurity::resolveEnvironmentUsing(function () {
             return 'foobar';
         });
 
@@ -52,19 +52,19 @@ class DecryptTest extends TestCase
         $this->artisan('env:decrypt')
             ->expectsOutput('Successfully decrypted .env for environment [foobar]');
 
-        $this->assertTrue(file_exists(__DIR__ . "/.env-saved"));
-        $this->assertEquals('heya', file_get_contents(__DIR__ . "/.env-saved"));
+        $this->assertTrue(file_exists(__DIR__.'/.env-saved'));
+        $this->assertEquals('heya', file_get_contents(__DIR__.'/.env-saved'));
     }
 
     public function testDecryptResolveKey()
     {
         // This is the
-        EnvSecurity::resolveEnvironmentUsing(function() {
+        EnvSecurity::resolveEnvironmentUsing(function () {
             return 'testing';
         });
 
-        EnvSecurity::resolveKeyUsing(function($environment) {
-            return 'mykey-' . $environment;
+        EnvSecurity::resolveKeyUsing(function ($environment) {
+            return 'mykey-'.$environment;
         });
 
         $this->saveEncrypted(EnvSecurity::encrypt('heya'), 'testing');
@@ -78,6 +78,6 @@ class DecryptTest extends TestCase
         $this->artisan('env:decrypt altenv')
             ->expectsOutput('Used key [mykey-altenv]');
 
-        $this->assertEquals('this is a separate environment file', file_get_contents(__DIR__ . "/.env-saved"));
+        $this->assertEquals('this is a separate environment file', file_get_contents(__DIR__.'/.env-saved'));
     }
 }

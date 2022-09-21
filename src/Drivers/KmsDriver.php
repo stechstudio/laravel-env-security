@@ -14,8 +14,7 @@ use Aws\Kms\KmsClient;
 use Illuminate\Contracts\Encryption\Encrypter;
 
 /**
- * Class KmsDriver
- * @package STS\EnvSecurity\Drivers
+ * Class KmsDriver.
  */
 final class KmsDriver implements Encrypter
 {
@@ -51,7 +50,7 @@ final class KmsDriver implements Encrypter
     {
         $result = $this->client->encrypt([
             'KeyId' => $this->keyId,
-            'Plaintext' => $value
+            'Plaintext' => $value,
         ])->get('CiphertextBlob');
 
         return ($serialize)
@@ -73,7 +72,7 @@ final class KmsDriver implements Encrypter
 
         return $this->client->decrypt([
             'KeyId' => $this->keyId,
-            'CiphertextBlob' => $payload
+            'CiphertextBlob' => $payload,
         ])->get('Plaintext');
     }
 

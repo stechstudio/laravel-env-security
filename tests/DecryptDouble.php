@@ -5,7 +5,7 @@ namespace Tests;
 use STS\EnvSecurity\Console\Decrypt;
 
 /**
- * Test double for our Edit command
+ * Test double for our Edit command.
  */
 class DecryptDouble extends Decrypt
 {
@@ -13,7 +13,7 @@ class DecryptDouble extends Decrypt
     {
         $result = parent::handle();
 
-        $this->info("Used key [".$this->envSecurity->resolveKey()."]");
+        $this->info('Used key ['.$this->envSecurity->resolveKey().']');
 
         return $result;
     }

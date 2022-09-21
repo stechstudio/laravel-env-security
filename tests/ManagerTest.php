@@ -3,8 +3,8 @@
 namespace Tests;
 
 use Illuminate\Support\Facades\Config;
-use STS\EnvSecurity\Drivers\GoogleKmsDriver;
 use STS\EnvSecurity\Drivers\KmsDriver;
+use STS\EnvSecurity\Drivers\GoogleKmsDriver;
 use STS\EnvSecurity\EnvSecurityFacade as EnvSecurity;
 
 class ManagerTest extends TestCase
@@ -33,7 +33,7 @@ class ManagerTest extends TestCase
             'auth_uri' => '',
             'token_uri' => '',
             'auth_provider_x509_cert_url' => '',
-            'client_x509_cert_url' => ''
+            'client_x509_cert_url' => '',
         ]));
         putenv('GOOGLE_APPLICATION_CREDENTIALS='.__DIR__.'/store/keyfile.json');
 
@@ -53,12 +53,12 @@ class ManagerTest extends TestCase
 
         EnvSecurity::setEnvironment(null);
         EnvSecurity::resolveEnvironmentUsing(function () {
-            return "heya";
+            return 'heya';
         });
 
         $this->assertEquals('heya', EnvSecurity::resolveEnvironment());
 
-        EnvSecurity::setEnvironment("override");
+        EnvSecurity::setEnvironment('override');
 
         $this->assertEquals('override', EnvSecurity::resolveEnvironment());
     }
@@ -72,8 +72,8 @@ class ManagerTest extends TestCase
             return "alias/myapp-$environment";
         });
 
-        $this->assertEquals("alias/myapp-testing", EnvSecurity::resolveKey());
+        $this->assertEquals('alias/myapp-testing', EnvSecurity::resolveKey());
 
-        $this->assertEquals("alias/myapp-newenv", EnvSecurity::setEnvironment('newenv')->resolveKey());
+        $this->assertEquals('alias/myapp-newenv', EnvSecurity::setEnvironment('newenv')->resolveKey());
     }
 }

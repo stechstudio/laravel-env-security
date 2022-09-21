@@ -14,10 +14,8 @@ use Illuminate\Console\Command;
 use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
 use STS\EnvSecurity\EnvSecurityManager;
 
-
 /**
- * Class Decrypt
- * @package STS\EnvSecurity\Console
+ * Class Decrypt.
  */
 class Decrypt extends Command
 {
@@ -58,29 +56,16 @@ class Decrypt extends Command
      */
     public function handle(): int
     {
-        $this->envSecurity->setEnvironment($this->environment());
-
         if (!$environment = $this->environment()) {
             $this->error("No environment specified, and we couldn't resolve it on our own");
 
             return 1;
         }
 
-        if (!$ciphertext = $this->loadEncrypted($environment)) {
-            $this->error("Unable to load encrypted .env file for environment [$environment]");
-
-            return 1;
-        }
-
-        $plaintext = $this->envSecurity->decrypt($ciphertext);
-
-        if (!$this->saveDecrypted($plaintext, $this->option('out'))) {
-            $this->error("Unable to save decrypted .env file");
-
-            return 1;
-        }
+        $this->envSecurity->decrypt($this->environment());
 
         $this->info("Successfully decrypted .env for environment [$environment]");
+
         return 0;
     }
 
@@ -89,7 +74,7 @@ class Decrypt extends Command
      */
     protected function environment(): array|string
     {
-        return is_null($this->argument('environment'))
+        return \is_null($this->argument('environment'))
             ? $this->envSecurity->resolveEnvironment()
             : $this->argument('environment');
     }

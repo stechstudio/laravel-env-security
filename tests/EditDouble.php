@@ -5,7 +5,7 @@ namespace Tests;
 use STS\EnvSecurity\Console\Edit;
 
 /**
- * Test double for our Edit command
+ * Test double for our Edit command.
  */
 class EditDouble extends Edit
 {
@@ -13,7 +13,7 @@ class EditDouble extends Edit
 
     protected function environment(): string
     {
-        return "testing";
+        return 'testing';
     }
 
     protected function edit($contents): string
@@ -21,7 +21,7 @@ class EditDouble extends Edit
         $this->info('Plaintext contents: '.$contents);
 
         if ($this->option('append')) {
-            $contents = trim($contents." ".$this->option('append'));
+            $contents = trim($contents.' '.$this->option('append'));
         }
 
         return $contents;

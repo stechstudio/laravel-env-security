@@ -11,10 +11,10 @@
 namespace STS\EnvSecurity\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
-use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
+use Illuminate\Support\Facades\Config;
 use STS\EnvSecurity\EnvSecurityManager;
+use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
 
 class Encrypt extends Command
 {
@@ -43,7 +43,6 @@ class Encrypt extends Command
         parent::__construct();
     }
 
-
     /**
      * Execute the console command.
      *
@@ -51,19 +50,16 @@ class Encrypt extends Command
      */
     public function handle(): void
     {
-
         if ($this->option('compress')) {
             Config::set('env-security.enable_compression', true);
         }
-        if (!File::isReadable($this->path())) {
-            $this->error("Make sure you have a .env file in your base project path");
+        if (! File::isReadable($this->path())) {
+            $this->error('Make sure you have a .env file in your base project path');
+
             return;
         }
 
-        $this->saveEncrypted(
-            $this->envSecurity->encrypt(file_get_contents($this->path())),
-            $this->environment()
-        );
+        $this->envSecurity->encrypt($this->environment());
 
         $this->info("Saved the contents of your current .env file for environment [{$this->environment()}]");
     }

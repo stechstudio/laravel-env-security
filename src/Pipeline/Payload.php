@@ -16,7 +16,6 @@ class Payload
     protected string $encryptedFilePath;
     public string $content;
 
-
     public function __construct(
         protected ?string $environment,
         protected EnvSecurityManager $manager,
@@ -49,12 +48,14 @@ class Payload
             throw new \InvalidArgumentException('There are only two operation types and $op is not supported.');
         }
         $this->operation = $op;
+
         return $this;
     }
 
     public function setPlainTextFilePath(string $path): self
     {
         $this->plainTextFilePath = $path;
+
         return $this;
     }
 
@@ -76,6 +77,7 @@ class Payload
     public function setResolution(bool $resolved): self
     {
         $this->isResolved = $resolved;
+
         return $this;
     }
 
@@ -86,7 +88,7 @@ class Payload
 
     public function checkZlibExtension(string $message): void
     {
-        if (!in_array('zlib', get_loaded_extensions())) {
+        if (!\in_array('zlib', get_loaded_extensions())) {
             throw new RuntimeException($message);
         }
     }

@@ -11,8 +11,7 @@
 namespace STS\EnvSecurity\Console\Concerns;
 
 /**
- * Class HandlesEnvFiles
- * @package STS\EnvSecurity\Console\Concerns
+ * Class HandlesEnvFiles.
  */
 trait HandlesEnvFiles
 {

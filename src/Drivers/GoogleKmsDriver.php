@@ -11,12 +11,11 @@
 namespace STS\EnvSecurity\Drivers;
 
 use Google\ApiCore\ApiException;
-use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 use Illuminate\Contracts\Encryption\Encrypter;
+use Google\Cloud\Kms\V1\KeyManagementServiceClient;
 
 /**
- * Class GoogleKmsDriver
- * @package STS\EnvSecurity\Drivers
+ * Class GoogleKmsDriver.
  */
 final class GoogleKmsDriver implements Encrypter
 {

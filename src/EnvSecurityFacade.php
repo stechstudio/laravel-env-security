@@ -29,7 +29,7 @@ use STS\EnvSecurity\Drivers\KmsDriver;
  * @method static string encrypt(string $value, bool $serialize = true)
  * @method static string decrypt(string $value, bool $deserialize = true)
  */
-class EnvSecurityFacade extends Facade
+final class EnvSecurityFacade extends Facade
 {
     protected static function getFacadeAccessor(): string
     {

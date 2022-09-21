@@ -4,9 +4,9 @@ namespace Tests;
 
 use Config;
 use EnvSecurity;
-use Orchestra\Testbench\TestCase as BaseTestCase;
 use STS\EnvSecurity\EnvSecurityFacade;
 use STS\EnvSecurity\EnvSecurityServiceProvider;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -18,7 +18,7 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'EnvSecurity' => EnvSecurityFacade::class
+            'EnvSecurity' => EnvSecurityFacade::class,
         ];
     }
 
@@ -56,8 +56,8 @@ abstract class TestCase extends BaseTestCase
     {
         parent::tearDown();
 
-        if (file_exists(__DIR__."/.env-saved")) {
-            unlink(__DIR__."/.env-saved");
+        if (file_exists(__DIR__.'/.env-saved')) {
+            unlink(__DIR__.'/.env-saved');
         }
     }
 }

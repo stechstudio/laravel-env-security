@@ -12,13 +12,12 @@ namespace STS\EnvSecurity\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
-use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
-use STS\EnvSecurity\EnvSecurityManager;
 use Symfony\Component\Process\Process;
+use STS\EnvSecurity\EnvSecurityManager;
+use STS\EnvSecurity\Console\Concerns\HandlesEnvFiles;
 
 /**
- * Class Edit
- * @package STS\EnvSecurity\Console
+ * Class Edit.
  */
 class Edit extends Command
 {
@@ -71,6 +70,7 @@ class Edit extends Command
         );
 
         $this->info("Successfully updated .env for environment [{$this->environment()}]");
+
         return 0;
     }
 
@@ -90,7 +90,7 @@ class Edit extends Command
         $process->setTimeout(null);
         $process->setTty(Process::isTtySupported());
         $process->mustRun();
-        if (!Process::isTtySupported()) {
+        if (! Process::isTtySupported()) {
             while (empty(file_get_contents($meta['uri'])) || file_get_contents($meta['uri']) === $contents) {
                 sleep(2);
             }
@@ -124,7 +124,7 @@ class Edit extends Command
      */
     protected function saveEnvContents($plaintext): void
     {
-        $ciphertext = !empty($plaintext)
+        $ciphertext = ! empty($plaintext)
             ? $this->envSecurity->encrypt($plaintext)
             : '';
 

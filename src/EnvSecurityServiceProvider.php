@@ -38,7 +38,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // helps deal with Lumen vs Laravel differences
-        if (function_exists('config_path')) {
+        if (\function_exists('config_path')) {
             $publishPath = config_path('env-security.php');
         } else {
             $publishPath = base_path('config/env-security.php');
@@ -53,7 +53,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
     }
 
     /**
-     * Make sure our directory is set up and ready
+     * Make sure our directory is set up and ready.
      */
     protected function verifyDirectory(): void
     {
@@ -73,7 +73,7 @@ class EnvSecurityServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register our console commands
+     * Register our console commands.
      */
     protected function getConsoleCommands(): array
     {

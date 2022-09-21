@@ -7,7 +7,7 @@ use STS\EnvSecurity\EnvSecurityServiceProvider;
 class ServiceProviderDouble extends EnvSecurityServiceProvider
 {
     /**
-     * Register our console commands
+     * Register our console commands.
      */
     protected function getConsoleCommands(): array
     {
