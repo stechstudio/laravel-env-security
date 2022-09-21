@@ -10,3 +10,4 @@
 .php_cs_laravel
 .phpunit*
 composer.lock
+.php-cs-fixer.cache
