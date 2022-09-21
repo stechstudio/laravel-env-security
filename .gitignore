@@ -1,6 +1,7 @@
 /vendor/
 /output/
 /tests/store/
+/tools/
 .idea
 .env
 .env.txt.enc
