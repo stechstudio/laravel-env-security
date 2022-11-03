@@ -1,0 +1,23 @@
+name: CI PHP 8.0
+
+on: [push]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: php-actions/composer@v5
+
+      - name: PHPUnit Tests
+        uses: php-actions/phpunit@v2
+        env:
+          APP_ENV: testing
+          APP_KEY: zbcmF4pUB5v4ShHiq6kJbWTQyiT8CUyw
+        with:
+          bootstrap: vendor/autoload.php
+          configuration: test/phpunit.xml
+          args: --coverage-text
+          php_version: "8.0"
