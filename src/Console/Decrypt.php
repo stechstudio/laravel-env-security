@@ -28,7 +28,7 @@ class Decrypt extends Command
      *
      * @var string
      */
-    protected $signature = 'env:decrypt
+    protected $signature = 'sts-env:decrypt
                             {environment? : Which environment file you wish to decrypt}
                             {--o|out= : Saves the decrypted file to an alternate location}';
 

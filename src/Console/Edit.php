@@ -29,7 +29,7 @@ class Edit extends Command
      *
      * @var string
      */
-    protected $signature = 'env:edit 
+    protected $signature = 'sts-env:edit 
                             {environment : Which environment file you wish to edit}
                             {--C|compress : Override configuration and require compression.}';
 

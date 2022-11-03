@@ -15,7 +15,7 @@ class Encrypt extends Command
     /**
      * @var string
      */
-    protected $signature = 'env:encrypt
+    protected $signature = 'sts-env:encrypt
                             {environment? : Which environment file you wish to encrypt}
                             {--c|compress : Override configuration and require compression.}';
     /**

@@ -32,7 +32,7 @@ In your composer.json file add `php artisan env:decrypt` as a post-install hook.
 "scripts": {
         "post-install-cmd": [
             ...
-            "php artisan env:decrypt"
+            "php artisan sts-env:decrypt"
         ]
 ```
 
@@ -121,13 +121,13 @@ Copy the Project, Key Ring and Key storing them as `GOOGLE_KMS_PROJECT`, `GOOGLE
 ## Usage
 
 #### Create/edit a .env file
-Run `php artisan env:edit [name]` where `[name]` is the environment you wish to create or edit. This will open the file in `vi` for you to edit. Modify something
+Run `php artisan sts-env:edit [name]` where `[name]` is the environment you wish to create or edit. This will open the file in `vi` for you to edit. Modify something
 in the file, save, and quit.
 
 _Use the `EDITOR` environment variable to set your preferred editor._
 
 #### Decrypt your .env
-Now you can run `php artisan env:decrypt [name]` which will decrypt the ciphertext file you edited, and write the
+Now you can run `php artisan sts-env:decrypt [name]` which will decrypt the ciphertext file you edited, and write the
 plaintext to your `.env`, replacing anything that was in it. Now if you look at your `.env` you should see your edit.
 
 If no environment `[name]` is provided, the environment will be determined by your own custom resolution callback or the `APP_ENV` environment variable.
@@ -135,7 +135,7 @@ If no environment `[name]` is provided, the environment will be determined by yo
 #### Encrypt and save your current .env
 Sometimes you may want to take your current .env file and encrypt exactly as-is. 
 
-Run `php artisan env:encrypt [name]` to do this, where `name` is the name of the encrypted environment file you wish to create. If you don't provide a name, your current `APP_ENV` environment name will be used.
+Run `php artisan sts-env:encrypt [name]` to do this, where `name` is the name of the encrypted environment file you wish to create. If you don't provide a name, your current `APP_ENV` environment name will be used.
 
 ## First deploy
 
