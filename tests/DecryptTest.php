@@ -22,7 +22,7 @@ class DecryptTest extends TestCase
     {
         $this->saveEncrypted(EnvSecurity::encrypt('hello world'), 'testing');
 
-        $this->artisan('env:decrypt testing')
+        $this->artisan('sts-env:decrypt testing')
             ->expectsOutput('Successfully decrypted .env for environment [testing]');
 
         $this->assertTrue(file_exists(__DIR__ . "/.env-saved"));
@@ -37,7 +37,7 @@ class DecryptTest extends TestCase
         }
 
         // Our test double will output the plaintext
-        $this->artisan('env:decrypt testing')
+        $this->artisan('sts-env:decrypt testing')
             ->expectsOutput('Unable to load encrypted .env file for environment [testing]');
     }
 
@@ -49,7 +49,7 @@ class DecryptTest extends TestCase
 
         $this->saveEncrypted(EnvSecurity::encrypt('heya'), 'foobar');
 
-        $this->artisan('env:decrypt')
+        $this->artisan('sts-env:decrypt')
             ->expectsOutput('Successfully decrypted .env for environment [foobar]');
 
         $this->assertTrue(file_exists(__DIR__ . "/.env-saved"));
@@ -70,12 +70,12 @@ class DecryptTest extends TestCase
         $this->saveEncrypted(EnvSecurity::encrypt('heya'), 'testing');
         $this->saveEncrypted(EnvSecurity::encrypt('this is a separate environment file'), 'altenv');
 
-        $this->artisan('env:decrypt')
+        $this->artisan('sts-env:decrypt')
             ->expectsOutput('Used key [mykey-testing]');
 
         // Now specify alternate environment from CLI, ensure we use that environment's key regardless of
         // our previously provided resolver
-        $this->artisan('env:decrypt altenv')
+        $this->artisan('sts-env:decrypt altenv')
             ->expectsOutput('Used key [mykey-altenv]');
 
         $this->assertEquals('this is a separate environment file', file_get_contents(__DIR__ . "/.env-saved"));

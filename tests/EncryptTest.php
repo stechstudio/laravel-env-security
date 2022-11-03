@@ -15,7 +15,7 @@ class EncryptTest extends TestCase
         @unlink($this->getFilePathForEnvironment('testing'));
         file_put_contents(base_path('.env'), "encrypt=this");
 
-        $this->artisan('env:encrypt testing')
+        $this->artisan('sts-env:encrypt testing')
             ->expectsOutput('Saved the contents of your current .env file for environment [testing]');
 
         $this->assertTrue(file_exists($this->getFilePathForEnvironment('testing')));
@@ -27,7 +27,7 @@ class EncryptTest extends TestCase
         // Make sure no file is present
         @unlink(base_path('.env'));
 
-        $this->artisan('env:encrypt testing')
+        $this->artisan('sts-env:encrypt testing')
             ->expectsOutput('Make sure you have a .env file in your base project path');
     }
 }
