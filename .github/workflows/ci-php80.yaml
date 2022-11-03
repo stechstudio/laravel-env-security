@@ -18,6 +18,6 @@ jobs:
           APP_KEY: zbcmF4pUB5v4ShHiq6kJbWTQyiT8CUyw
         with:
           bootstrap: vendor/autoload.php
-          configuration: test/phpunit.xml
+          configuration: phpunit.xml
           args: --coverage-text
           php_version: "8.0"
