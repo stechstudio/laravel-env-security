@@ -28,7 +28,7 @@ class Decrypt extends Command
      *
      * @var string
      */
-    protected $signature = 'env:decrypt
+    protected $signature = 'env:fetch
                             {environment? : Which environment file you wish to decrypt}
                             {--o|out= : Saves the decrypted file to an alternate location}';
 
@@ -37,7 +37,7 @@ class Decrypt extends Command
      *
      * @var string
      */
-    protected $description = 'Decrypt a .env file. Tries to deduce the environment if none provided.';
+    protected $description = 'Retrieve and decrypt a .env file. Tries to deduce the environment if none provided.';
 
     /**
      * @var EnvSecurityManager

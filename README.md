@@ -16,6 +16,9 @@ Our package is different in the following ways:
 2) We need to manage .env files for multiple environments (like qa, uat, production). This package allows you to manage any number of environment-specific .env files.
 3) We wanted to leverage services like AWS Key Management Service to handle encryption/decryption, with the option to add other encryption drivers (like ansible) or secrets management services (like AWS Secrets Manager) in the future.
 
+> ### Note  
+> Laravel v9.32.0 introduced new `env:encrypt` and `env:decrypt` commands, which conflicted with the commands in this package. We have moved our commands in v2 to `env:store` and `env:fetch`.
+
 ## Installation and Setup
 ### Prerequisites
 If you intend to enable compression you must have the [Zlib Compression Extension](https://www.php.net/manual/en/book.zlib.php) installed and enabled.
@@ -26,13 +29,13 @@ If you intend to enable compression you must have the [Zlib Compression Extensio
 
 ### Add the composer hook
 
-In your composer.json file add `php artisan env:decrypt` as a post-install hook. You likely already have a `post-install-cmd` section, add the new command so it looks like this:
+In your composer.json file add `php artisan env:fetch` as a post-install hook. You likely already have a `post-install-cmd` section, add the new command so it looks like this:
 
 ```
 "scripts": {
         "post-install-cmd": [
             ...
-            "php artisan env:decrypt"
+            "php artisan env:fetch"
         ]
 ```
 
@@ -127,7 +130,7 @@ in the file, save, and quit.
 _Use the `EDITOR` environment variable to set your preferred editor._
 
 #### Decrypt your .env
-Now you can run `php artisan env:decrypt [name]` which will decrypt the ciphertext file you edited, and write the
+Now you can run `php artisan env:fetch [name]` which will decrypt the ciphertext file you edited, and write the
 plaintext to your `.env`, replacing anything that was in it. Now if you look at your `.env` you should see your edit.
 
 If no environment `[name]` is provided, the environment will be determined by your own custom resolution callback or the `APP_ENV` environment variable.
@@ -135,7 +138,7 @@ If no environment `[name]` is provided, the environment will be determined by yo
 #### Encrypt and save your current .env
 Sometimes you may want to take your current .env file and encrypt exactly as-is. 
 
-Run `php artisan env:encrypt [name]` to do this, where `name` is the name of the encrypted environment file you wish to create. If you don't provide a name, your current `APP_ENV` environment name will be used.
+Run `php artisan env:store [name]` to do this, where `name` is the name of the encrypted environment file you wish to create. If you don't provide a name, your current `APP_ENV` environment name will be used.
 
 ## First deploy
 
