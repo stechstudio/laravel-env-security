@@ -22,12 +22,12 @@ class CompressionTest extends TestCase
         file_put_contents(base_path('.env'), $plaintext);
 
         // Encrypt without compression
-        $this->artisan("sts-env:encrypt {$environment_1}")
+        $this->artisan("env:store {$environment_1}")
             ->expectsOutput("Saved the contents of your current .env file for environment [{$environment_1}]");
         $this->assertTrue(file_exists($this->getFilePathForEnvironment($environment_1)));
 
         // Encrypt the same with compression
-        $this->artisan("sts-env:encrypt {$environment_2} --compress")
+        $this->artisan("env:store {$environment_2} --compress")
             ->expectsOutput("Saved the contents of your current .env file for environment [{$environment_2}]");
         $this->assertTrue(file_exists($this->getFilePathForEnvironment($environment_2)));
 

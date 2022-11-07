@@ -9,7 +9,7 @@ use STS\EnvSecurity\Console\Edit;
  */
 class EditDouble extends Edit
 {
-    protected $signature = 'sts-env:edit {environment : Which environment file you wish to decrypt} {--c|compress : Override configuration and require compression.} {--append=} ';
+    protected $signature = 'env:edit {environment : Which environment file you wish to decrypt} {--c|compress : Override configuration and require compression.} {--append=} ';
 
     protected function environment()
     {

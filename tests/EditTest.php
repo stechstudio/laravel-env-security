@@ -36,7 +36,7 @@ class EditTest extends TestCase
         Config::set('env-security.default', 'failonencrypt');
 
         // Our test double will output the plaintext
-        $this->artisan('sts-env:edit testing')
+        $this->artisan('env:edit testing')
             ->expectsOutput('Plaintext contents: ');
 
         // File should be empty
@@ -49,7 +49,7 @@ class EditTest extends TestCase
         $this->saveEncrypted(EnvSecurity::encrypt('hello world'), "testing");
 
         // Our test double will output the plaintext
-        $this->artisan('sts-env:edit testing --append modified')
+        $this->artisan('env:edit testing --append modified')
             ->expectsOutput('Plaintext contents: hello world');
 
         // File will have "modified" appended and be re-encrypted
