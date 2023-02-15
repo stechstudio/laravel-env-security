@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/stechstudio/laravel-env-security.svg?style=flat-square)](https://packagist.org/packages/stechstudio/laravel-env-security)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/stechstudio/laravel-env-security.svg?style=flat-square)](https://packagist.org/packages/stechstudio/laravel-env-security)
-[![Build](https://img.shields.io/github/actions/workflow/status/stechstudio/laravel-env-security/ci-php82.yaml?style=flat-square)
+[![Build](https://img.shields.io/github/actions/workflow/status/stechstudio/laravel-env-security/ci-php82.yaml?style=flat-square)]
 
 This package helps you manage .env files for different deployment environments. Each .env file is securely encrypted and kept in your app's version control. When you deploy your app the appropriate environment-specific .env file is decrypted and moved into place.
 
