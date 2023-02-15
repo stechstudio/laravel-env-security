@@ -1,4 +1,4 @@
-name: CI PHP 8.0
+name: CI PHP 8.2
 
 on: [push]
 
@@ -11,7 +11,7 @@ jobs:
 
       - uses: php-actions/composer@v6
         with:
-          php_version: "8.0"
+          php_version: "8.2"
 
       - name: PHPUnit Tests
         uses: php-actions/phpunit@v3
@@ -22,4 +22,4 @@ jobs:
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml
           args: --coverage-text
-          php_version: "8.0"
+          php_version: "8.2"
