@@ -77,4 +77,24 @@ class KmsDriver implements Encrypter
         // We have no key to return. This exists purely to comply with the interface.
         return '';
     }
+
+    /**
+    * @return array
+    */
+    public function getAllKeys()
+    {
+        // We have no keys to return. This exists purely to comply with the interface.
+        return [];
+    }
+
+    /**
+     * Get the previous encryption keys.
+     *
+     * @return array
+     */
+    public function getPreviousKeys()
+    {
+        // We have no keys to return. This exists purely to comply with the interface.
+        return [];
+    }
 }
