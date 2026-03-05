@@ -1,4 +1,4 @@
-name: CI PHP 8.2
+name: CI
 
 on: [push]
 
@@ -6,21 +6,26 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php: ["8.2", "8.5"]
+
+    name: PHP ${{ matrix.php }}
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - uses: php-actions/composer@v6
         with:
-          php_version: "8.2"
+          php_version: ${{ matrix.php }}
 
       - name: PHPUnit Tests
-        uses: php-actions/phpunit@v3
+        uses: php-actions/phpunit@v4
         env:
           APP_ENV: testing
           APP_KEY: zbcmF4pUB5v4ShHiq6kJbWTQyiT8CUyw
         with:
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml
-          args: --coverage-text
-          php_version: "8.2"
-          version: "9"
+          php_version: ${{ matrix.php }}
+          version: "12"

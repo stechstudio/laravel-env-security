@@ -4,10 +4,9 @@ namespace STS\EnvSecurity;
 
 use Aws\Kms\KmsClient;
 use ErrorException;
-use Google\Cloud\Kms\V1\KeyManagementServiceClient;
+use Google\Cloud\Kms\V1\Client\KeyManagementServiceClient;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Manager;
-use Illuminate\Support\Str;
 use RuntimeException;
 use STS\EnvSecurity\Drivers\GoogleKmsDriver;
 use STS\EnvSecurity\Drivers\KmsDriver;
@@ -163,7 +162,7 @@ class EnvSecurityManager extends Manager
     {
         $value = $this->driver()->decrypt($value, $unserialize);
         
-        if (Str::substr($value, 0, strlen('gzencoded::')) === 'gzencoded::') {
+        if (substr($value, 0, strlen('gzencoded::')) === 'gzencoded::') {
             $value = $this->decompress($value);
         }
 
@@ -184,7 +183,7 @@ class EnvSecurityManager extends Manager
                     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
                 },
                 E_WARNING);
-            $result = gzdecode(Str::substr($value, strlen('gzencoded::')));
+            $result = gzdecode(substr($value, strlen('gzencoded::')));
         } catch (ErrorException $previous) {
             throw new RuntimeException(
                 'The unencrypted data is corrupt and can not be uncompressed.',

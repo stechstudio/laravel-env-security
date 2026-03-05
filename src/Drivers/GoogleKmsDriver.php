@@ -2,7 +2,9 @@
 
 namespace STS\EnvSecurity\Drivers;
 
-use Google\Cloud\Kms\V1\KeyManagementServiceClient;
+use Google\Cloud\Kms\V1\Client\KeyManagementServiceClient;
+use Google\Cloud\Kms\V1\DecryptRequest;
+use Google\Cloud\Kms\V1\EncryptRequest;
 use Illuminate\Contracts\Encryption\Encrypter;
 
 /**
@@ -44,7 +46,11 @@ class GoogleKmsDriver implements Encrypter
      */
     public function encrypt($value, $serialize = true)
     {
-        $result = $this->client->encrypt($this->keyName, $value)->getCiphertext();
+        $request = (new EncryptRequest())
+            ->setName($this->keyName)
+            ->setPlaintext($value);
+
+        $result = $this->client->encrypt($request)->getCiphertext();
 
         return ($serialize)
             ? base64_encode($result)
@@ -63,7 +69,11 @@ class GoogleKmsDriver implements Encrypter
             $payload = base64_decode($payload);
         }
 
-        return $this->client->decrypt($this->keyName, $payload)->getPlaintext();
+        $request = (new DecryptRequest())
+            ->setName($this->keyName)
+            ->setCiphertext($payload);
+
+        return $this->client->decrypt($request)->getPlaintext();
     }
 
     /**
