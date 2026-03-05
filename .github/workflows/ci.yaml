@@ -8,7 +8,11 @@ jobs:
 
     strategy:
       matrix:
-        php: ["8.2", "8.5"]
+        include:
+          - php: "8.2"
+            phpunit: "11"
+          - php: "8.5"
+            phpunit: "12"
 
     name: PHP ${{ matrix.php }}
 
@@ -28,4 +32,4 @@ jobs:
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml
           php_version: ${{ matrix.php }}
-          version: "12"
+          version: ${{ matrix.phpunit }}
